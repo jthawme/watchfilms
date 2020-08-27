@@ -1,0 +1,13 @@
+@import "parts/type";
+@import "parts/colors";
+
+html,
+body {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-normal);
+
+  color: var(--color-text);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

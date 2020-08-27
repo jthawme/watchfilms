@@ -1,0 +1,27 @@
+:root {
+  --font-family-body: "GT America", sans-serif;
+  --font-family-headline: "Nichrome", sans-serif;
+
+  --font-size-small: 12px;
+  --font-size-normal: 16px;
+  --font-size-large: 36px;
+  --font-size-x-large: 48px;
+
+  --font-weight-body: 200;
+  --font-weight-headline: 900;
+}
+
+@font-face {
+  font-family: "GT America";
+  src: url("../fonts/GT-America-Extended-Light.woff") format("woff"),
+    url("../fonts/GT-America-Extended-Light.woff2") format("woff2");
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Nichrome";
+  src: url("../fonts/Nichrome0.5-Ultra.woff") format("woff"),
+    url("../fonts/Nichrome0.5-Ultra.woff2") format("woff2");
+  font-weight: bold;
+  font-display: block;
+}
