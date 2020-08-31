@@ -1,0 +1,178 @@
+.page {
+  position: relative;
+
+  height: 100vh;
+  display: flex;
+
+  flex-direction: column;
+}
+
+.section {
+  max-width: 1280px;
+  width: 80%;
+
+  margin: 0 auto;
+}
+
+.content {
+  padding-top: 10%;
+  flex-grow: 1;
+
+  overflow: auto;
+
+  padding-bottom: 60px;
+}
+
+.header {
+  display: flex;
+
+  padding: 0 var(--size-unit-4);
+
+  .title {
+    flex-grow: 0;
+
+    font-weight: var(--font-weight-body);
+
+    text-transform: uppercase;
+
+    margin: 0;
+
+    font-size: var(--font-size-medium);
+  }
+
+  .middle {
+    flex-grow: 1;
+
+    padding: 0 var(--size-unit-4);
+  }
+
+  .filter {
+    flex-grow: 0;
+  }
+}
+
+.selectedTitle {
+  font-size: var(--font-size-medium);
+
+  font-weight: var(--font-weight-body);
+
+  text-transform: uppercase;
+
+  color: var(--color-accent);
+}
+
+.filter input {
+  -webkit-appearance: none;
+  border-radius: 0;
+
+  background-color: transparent;
+
+  border: 0;
+
+  font-family: inherit;
+  font-size: var(--font-size-medium);
+
+  text-align: right;
+  text-transform: uppercase;
+
+  padding: 0;
+  margin: 0;
+
+  outline: 0;
+
+  color: inherit;
+
+  &::placeholder {
+    color: var(--color-text-light);
+  }
+}
+
+.pool {
+  display: flex;
+
+  justify-content: center;
+  flex-wrap: wrap;
+
+  margin-top: var(--size-unit-6);
+}
+
+.item {
+  margin: var(--size-unit-2) var(--size-unit-4);
+
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    opacity: 0.75;
+  }
+
+  span {
+    position: relative;
+
+    display: block;
+
+    font-family: var(--font-family-headline);
+    font-size: var(--font-size-xx-large);
+
+    line-height: 1;
+
+    &::before {
+      position: absolute;
+
+      top: calc(50% + var(--size-unit-1));
+      left: calc(var(--size-unit-2) * -1);
+
+      width: calc(100% + var(--size-unit-4));
+      height: 2px;
+
+      background-color: var(--color-accent);
+
+      content: "";
+
+      transform: scaleX(0);
+      transform-origin: top left;
+
+      transition: {
+        duration: 0.45s;
+        timing-function: cubic-bezier(0.43, 0.53, 0.8, 0.37);
+        property: transform;
+      }
+    }
+  }
+
+  input {
+    display: none;
+  }
+
+  input:checked ~ span::before {
+    transform: scaleX(1);
+  }
+}
+
+.footer {
+  position: relative;
+  width: 100%;
+
+  padding: var(--size-unit-10) 0 var(--size-unit-10);
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  outline: 1px solid red;
+
+  background-color: white;
+
+  &:before {
+    content: "";
+
+    position: absolute;
+
+    bottom: 100%;
+    left: 0;
+
+    width: 100%;
+    height: 60px;
+
+    background: linear-gradient(to top, white, transparent);
+  }
+}

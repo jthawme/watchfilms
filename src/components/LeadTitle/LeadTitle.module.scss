@@ -1,0 +1,52 @@
+@import "~styles/common";
+
+.page {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.grid {
+  display: grid;
+
+  grid-template-areas:
+    "one"
+    "two"
+    "three";
+
+  height: 100%;
+
+  padding: var(--size-unit-4);
+}
+
+.title {
+  font-family: var(--font-family-headline);
+  text-transform: uppercase;
+
+  font-size: 22vw;
+  line-height: 1;
+
+  &:nth-child(1) {
+    grid-area: one;
+
+    align-self: flex-start;
+  }
+
+  &:nth-child(2) {
+    grid-area: two;
+
+    align-self: center;
+    justify-self: flex-end;
+  }
+
+  &:nth-child(3) {
+    grid-area: three;
+
+    align-self: flex-end;
+  }
+
+  @include tablet {
+    font-size: var(--font-size-xxxx-large);
+  }
+}

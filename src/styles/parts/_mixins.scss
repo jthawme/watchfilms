@@ -1,0 +1,28 @@
+$large-mobile-breakpoint: 35em;
+$tablet-breakpoint: 48em;
+$desktop-breakpoint: 60em;
+$widescreen-breakpoint: 80em;
+
+@mixin large-mobile {
+  @media screen and (min-width: $large-mobile-breakpoint) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: $tablet-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: $desktop-breakpoint) {
+    @content;
+  }
+}
+
+@mixin widescreen {
+  @media screen and (min-width: $widescreen-breakpoint) {
+    @content;
+  }
+}
