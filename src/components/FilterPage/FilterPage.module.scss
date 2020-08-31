@@ -1,3 +1,5 @@
+@import "~styles/common";
+
 .page {
   position: relative;
 
@@ -8,19 +10,25 @@
 }
 
 .section {
-  max-width: 1280px;
-  width: 80%;
-
   margin: 0 auto;
+
+  @include tablet {
+    max-width: 1280px;
+    width: 80%;
+  }
 }
 
 .content {
-  padding-top: 10%;
+  padding: var(--size-unit-8) var(--size-unit-6) var(--size-unit-10);
+
   flex-grow: 1;
 
   overflow: auto;
 
-  padding-bottom: 60px;
+  @include tablet {
+    padding-top: 10%;
+    padding-bottom: 60px;
+  }
 }
 
 .header {
@@ -30,6 +38,9 @@
 
   .title {
     flex-grow: 0;
+    flex-shrink: 0;
+
+    flex-basis: 50%;
 
     font-weight: var(--font-weight-body);
 
@@ -41,6 +52,8 @@
   }
 
   .middle {
+    display: none;
+
     flex-grow: 1;
 
     padding: 0 var(--size-unit-4);
@@ -48,6 +61,20 @@
 
   .filter {
     flex-grow: 0;
+    flex-shrink: 0;
+
+    flex-basis: 50%;
+  }
+
+  @include tablet {
+    .title,
+    .filter {
+      flex-basis: auto;
+    }
+
+    .middle {
+      display: block;
+    }
   }
 }
 
@@ -78,12 +105,18 @@
   padding: 0;
   margin: 0;
 
+  width: 100%;
+
   outline: 0;
 
   color: inherit;
 
   &::placeholder {
     color: var(--color-text-light);
+  }
+
+  &.hasText {
+    border-bottom: 1px solid var(--color-bg-light);
   }
 }
 

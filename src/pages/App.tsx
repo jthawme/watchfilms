@@ -18,7 +18,7 @@ const STAGES = {
 const PADDING_DESIRED = 64;
 
 const App = () => {
-  const [stage, setStage] = useState(STAGES.FILM);
+  const [stage, setStage] = useState(STAGES.FILTER);
   const [showCredits, setShowCredits] = useState(false);
   const [scaleFactor, setScaleFactor] = useState(1);
 
@@ -75,12 +75,14 @@ const App = () => {
         {stage === STAGES.FILM && <FilmLoad />}
       </main>
 
-      <button
-        className={styles.creditsBtn}
-        onClick={() => setShowCredits(!showCredits)}
-      >
-        {showCredits ? "Close" : "Credits"}
-      </button>
+      {stage !== STAGES.TITLE && stage !== STAGES.INTRO && (
+        <button
+          className={styles.creditsBtn}
+          onClick={() => setShowCredits(!showCredits)}
+        >
+          {showCredits ? "Close" : "Credits"}
+        </button>
+      )}
 
       <footer className={styles.footer}>
         <div className={styles.left}>

@@ -1,16 +1,20 @@
+@import "~styles/common";
+
 .page {
   position: relative;
 
   z-index: 2;
 
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
 
   overflow: auto;
 
   -webkit-overflow-scrolling: touch;
 
   background-color: white;
+
+  transform-origin: top center;
 
   transition: {
     duration: 0.35s;
@@ -19,28 +23,37 @@
 }
 
 .credits .page {
-  transform: scale(var(--scale-factor)) translate3d(0, -200px, 0);
+  transform: scale(var(--scale-factor)) translate3d(0, -80vh, 0);
   border-radius: 20px;
+
+  @include tablet {
+    transform: scale(var(--scale-factor)) translate3d(0, -200px, 0);
+  }
 }
 
 .outer {
   position: relative;
 
   background-color: var(--color-accent);
+
+  height: 100vh;
+
+  overflow: hidden;
 }
 
 .footer {
+  position: absolute;
   display: grid;
 
-  grid-template-columns: 1fr 1fr;
-  position: absolute;
-  gap: 10vw;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr;
+  row-gap: var(--size-unit-10);
 
   bottom: 0;
   left: 0;
 
   width: 100%;
-  height: 200px;
+  height: calc(80vh + var(--size-unit-4));
 
   padding: var(--size-unit-4) var(--size-unit-10);
 
@@ -59,12 +72,31 @@
   }
 
   .left {
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
   }
 
   .right {
     font-size: var(--font-size-small);
-    text-align: right;
+    padding-bottom: var(--size-unit-10);
+
+    align-self: flex-end;
+  }
+
+  @include tablet {
+    height: 200px;
+
+    grid-template-columns: 1fr 1fr;
+    gap: 10vw;
+
+    .left {
+      font-size: var(--font-size-medium);
+    }
+
+    .right {
+      text-align: right;
+
+      padding-bottom: 0;
+    }
   }
 }
 

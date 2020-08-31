@@ -1,3 +1,5 @@
+@import "~styles/common";
+
 .layout {
   position: relative;
 
@@ -6,17 +8,25 @@
   column-gap: var(--size-unit-8);
 
   grid-template-areas:
-    "header header"
-    "left right"
-    "footer footer";
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr auto;
+    "header"
+    "right"
+    "left"
+    "footer";
 
-  height: 100vh;
+  @include tablet {
+    grid-template-areas:
+      "header header"
+      "left right"
+      "footer footer";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+
+    height: 100vh;
+  }
 }
 
 .synopsis {
-  position: absolute;
+  position: fixed;
 
   display: flex;
 
@@ -49,7 +59,7 @@
   }
 
   p {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-medium);
     text-align: justify;
 
     margin: 0 0 1em;
@@ -85,12 +95,20 @@
       opacity: 0.75;
     }
   }
+
+  @include tablet {
+    position: absolute;
+
+    p {
+      font-size: var(--font-size-large);
+    }
+  }
 }
 
 .header {
   grid-area: header;
 
-  padding: var(--size-unit-8);
+  padding: var(--size-unit-4);
 
   text-align: center;
 
@@ -100,6 +118,10 @@
 
     font-size: var(--font-size-normal);
   }
+
+  @include tablet {
+    padding: var(--size-unit-8);
+  }
 }
 
 .left {
@@ -107,9 +129,9 @@
 
   align-self: center;
 
-  padding-left: var(--size-unit-12);
+  padding: var(--size-unit-12) var(--size-unit-6);
 
-  text-align: right;
+  text-align: center;
 
   text-transform: uppercase;
 
@@ -154,6 +176,10 @@
       }
     }
   }
+
+  @include tablet {
+    padding-left: var(--size-unit-12);
+  }
 }
 
 .right {
@@ -164,24 +190,35 @@
   align-items: center;
   justify-content: center;
 
-  padding: var(--size-unit-4);
-
   grid-area: right;
 
   background-color: var(--color-bg-light);
 
+  height: 40vh;
+
   img {
     position: absolute;
 
-    top: var(--size-unit-10);
-    left: var(--size-unit-10);
+    top: var(--size-unit-3);
+    left: var(--size-unit-3);
 
-    height: auto;
-    width: calc(100% - var(--size-unit-20));
-    height: calc(100% - var(--size-unit-20));
+    width: calc(100% - var(--size-unit-6));
+    height: calc(100% - var(--size-unit-6));
 
     object-fit: contain;
     object-position: center;
+  }
+
+  @include tablet {
+    height: auto;
+
+    img {
+      top: var(--size-unit-10);
+      left: var(--size-unit-10);
+
+      width: calc(100% - var(--size-unit-20));
+      height: calc(100% - var(--size-unit-20));
+    }
   }
 }
 
@@ -189,6 +226,10 @@
   grid-area: footer;
 
   padding: var(--size-unit-8);
+
+  border-top: 1px solid var(--color-bg-light);
+
+  margin-top: var(--size-unit-4);
 }
 
 .director {

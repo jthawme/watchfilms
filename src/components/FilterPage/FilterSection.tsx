@@ -58,8 +58,6 @@ const FilterSection: React.FC<FilterSectionProps> = ({
         sel.push(val);
       }
 
-      console.log(sel);
-
       onSelect(sel);
     },
     [onSelect, selected]
@@ -92,13 +90,14 @@ const FilterSection: React.FC<FilterSectionProps> = ({
             type="text"
             placeholder="Filter"
             value={filterText}
+            className={!!filterText ? styles.hasText : ""}
           />
         </div>
       </header>
 
       <div className={styles.pool}>
         {checkedItems.map((item) => (
-          <label className={styles.item}>
+          <label key={item.value} className={styles.item}>
             <input
               onChange={(e) => reportSelected(item.value)}
               type="checkbox"
