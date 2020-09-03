@@ -1,5 +1,10 @@
 module.exports = {
   DIRECTORS: {
     WES_ANDERSON: "5655",
+    SPIKE_JONZE: "5953",
+    JEAN_LUC_GODARD: "3776",
+    GRETA_GERWIG: "45400",
+    SOFIA_COPPOLA: "1769",
+    JIM_JARMUSCH: "4429",
   },
 };
