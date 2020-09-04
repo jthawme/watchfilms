@@ -5,6 +5,7 @@ import styles from "./ActionArea.module.scss";
 type ActionItem = {
   label?: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 interface ActionAreaProps {
@@ -15,7 +16,11 @@ interface ActionAreaProps {
 const ActionArea: React.FC<ActionAreaProps> = ({ action, subAction }) => {
   return (
     <div className={styles.action}>
-      <button className={styles.btn} onClick={action.onClick}>
+      <button
+        className={styles.btn}
+        onClick={action.onClick}
+        disabled={action.disabled}
+      >
         {action.label || "Click"}
       </button>
       {subAction && (

@@ -21,13 +21,19 @@
 
   color: inherit;
 
-  cursor: pointer;
-
   text-transform: uppercase;
 
-  &:hover,
-  &:focus {
+  &[disabled] {
+    opacity: 0.2;
+
+    cursor: not-allowed;
+  }
+
+  &:not([disabled]):hover,
+  &:not([disabled]):focus {
     opacity: 0.75;
+
+    cursor: pointer;
   }
 
   &.sub {

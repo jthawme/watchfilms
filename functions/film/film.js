@@ -1,45 +1,80 @@
-const axios = require("axios");
-const { DIRECTORS } = require("./common");
+const { db } = require("./common");
 
-const MINIMUM_RUNTIME = 60;
+const MAX_TRIES = 5;
 
-const queryBuilder = (route, data = {}) => {
-  return axios
-    .get(`https://api.themoviedb.org/3${route}`, {
-      params: {
-        ...data,
-        api_key: process.env.MOVIEDB_API,
-      },
+function getFilmFromDirectors(directorIds, skip = [], tries = 0) {
+  const splitIds = directorIds.split(",");
+  const directorId = randomDirectorFromParams(directorIds);
+
+  return db.Client.query(
+    db.Query.Paginate(
+      db.Query.Match(db.Query.Index("films_by_director"), directorId.toString())
+    )
+  )
+    .then((refs) => {
+      const randomRef = refs.data[Math.floor(refs.data.length * Math.random())];
+
+      return db.Client.query(db.Query.Get(randomRef));
     })
-    .then((result) => result.data);
-};
+    .then((ref) => {
+      const film = ref.data;
 
-const getMovie = (movieId) => {
-  return queryBuilder(`/movie/${movieId}`);
-};
+      if (skip.indexOf(film.id.toString()) >= 0) {
+        if (tries > MAX_TRIES) {
+          const newIds = directorIds.split(",");
 
-const getDirectedMovies = (directorId) => {
-  return queryBuilder(`/person/${directorId}/credits`)
-    .then((results) => {
-      return results.crew.filter((i) => i.department === "Directing");
-    })
-    .then((movies) => {
-      return Promise.all(movies.map((m) => getMovie(m.id)));
-    })
-    .then((works) => works.filter((w) => w.runtime > MINIMUM_RUNTIME));
-};
+          if (newIds.length > 1) {
+            newIds.splice(newIds.indexOf(directorId), 1);
+
+            return getFilmFromDirectors(newIds.join(","), skip, 0);
+          } else {
+            throw new Error("Unable to find film");
+          }
+        }
+
+        return getFilmFromDirectors(directorIds, skip, tries + 1);
+      }
+
+      return film;
+    });
+}
+
+function randomDirectorFromParams(directors) {
+  const split = directors.split(",");
+
+  return split[Math.floor(split.length * Math.random())];
+}
+
+function returnError(message, statusCode = 400) {
+  return {
+    statusCode: statusCode,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message,
+    }),
+  };
+}
 
 exports.handler = async (event, context) => {
+  const { directors, skip = "" } = JSON.parse(event.body);
+
+  if (!directors) {
+    return returnError("No Directors");
+  }
+
   try {
-    const movies = await getDirectedMovies(DIRECTORS.WES_ANDERSON);
+    const film = await getFilmFromDirectors(directors, skip.split(","));
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        movie: movies[Math.floor(movies.length * Math.random())],
-      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(film),
     };
-  } catch (err) {
-    return { statusCode: 500, body: err.toString() };
+  } catch (e) {
+    return returnError(e.message);
   }
 };

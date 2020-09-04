@@ -1,0 +1,16 @@
+.wrapper {
+  position: relative;
+
+  img {
+    opacity: 0;
+
+    transition: {
+      duration: 0.25s;
+      property: opacity;
+    }
+  }
+}
+
+.show img {
+  opacity: 1;
+}

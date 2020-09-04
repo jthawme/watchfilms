@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
 import styles from "./FilmSelection.module.scss";
 import { ActionArea } from "../ActionArea";
 import { movieDbImage } from "../../common/utils";
+import { getDirectorById, Film } from "common/data";
+import { LazyImage } from "components/common/LazyImage";
 
-const TEST_SYNOPSIS = `When a beautiful first-grade teacher arrives at a prep school, she soon attracts the attention of an ambitious teenager named Max, who quickly falls in love with her. Max turns to the father of two of his schoolmates for advice on how to woo the teacher. However, the situation soon gets complicated when Max's new friend becomes involved with her, setting the two pals against one another in a war for her attention.`;
+export interface FilmSelectionProps extends Film {
+  onRespin: () => void;
+  onSkip: () => void;
+  canRespin: boolean;
+}
 
-const FilmSelection = ({
-  title = "The Last Black Man in San Francisco",
-  director = "Joe Talbot",
-  time = "117 mins",
-  genre = "Drama",
-  year = "2019",
-  synopsis = TEST_SYNOPSIS,
+const FilmSelection: React.FC<FilmSelectionProps> = ({
+  title,
+  director,
+  runtime,
+  genres,
+  date,
+  synopsis,
+  poster,
+  onRespin,
+  onSkip,
+  canRespin,
 }) => {
+  const displayDate = useMemo(() => {
+    return new Date(date).getFullYear();
+  }, [date]);
   const [showSynopsis, setShowSynopsis] = useState(false);
 
   return (
@@ -38,13 +51,15 @@ const FilmSelection = ({
       <div className={styles.left}>
         <h1>{title}</h1>
         <p>
-          <span className={styles.director}>{director}</span>
+          <span className={styles.director}>
+            {getDirectorById(director)?.label || "Unknown"}
+          </span>
           <br />
-          {time}
+          {runtime} mins
           <br />
-          {genre}
+          {genres.shift()}
           <br />
-          {year}
+          {displayDate}
           <br />
         </p>
         <p>
@@ -52,17 +67,18 @@ const FilmSelection = ({
         </p>
       </div>
       <div className={styles.right}>
-        <img alt="" src={movieDbImage("/hSJ6swahAuZ8wM96lHDTwQPXUvZ.jpg")} />
+        <LazyImage alt="" src={movieDbImage(poster)} className={styles.image} />
       </div>
       <footer className={styles.footer}>
         <ActionArea
           action={{
             label: "Find another film →",
-            onClick: () => console.log("click action"),
+            onClick: onRespin,
+            disabled: !canRespin,
           }}
           subAction={{
             label: "I've seen this film already",
-            onClick: () => console.log("click seen"),
+            onClick: onSkip,
           }}
         />
       </footer>

@@ -5,6 +5,13 @@
 
   width: 100vw;
   height: 100vh;
+
+  @include tablet {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .grid {
@@ -18,6 +25,19 @@
   height: 100%;
 
   padding: var(--size-unit-4);
+
+  @include tablet {
+    grid-template-areas:
+      "one two"
+      "three three";
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--size-unit-20);
+
+    margin: 0 auto;
+
+    max-width: 800px;
+    height: auto;
+  }
 }
 
 .title {
@@ -47,6 +67,7 @@
   }
 
   @include tablet {
-    font-size: var(--font-size-xxxx-large);
+    font-size: 10vw;
+    text-align: center;
   }
 }

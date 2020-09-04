@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import styles from "./IntroText.module.scss";
+import { useWatchContext } from "components/WatchContext";
+import { STAGES } from "common/data";
 
 const STEPS = {
   FIRST: "first",
@@ -8,7 +10,18 @@ const STEPS = {
 };
 
 const IntroText = () => {
+  const { setStage } = useWatchContext();
   const [step, setStep] = useState(STEPS.FIRST);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStep(STEPS.SECOND);
+    }, 2000);
+
+    setTimeout(() => {
+      setStage(STAGES.FILTER);
+    }, 4000);
+  }, [setStage]);
 
   return (
     <div className={styles.page}>

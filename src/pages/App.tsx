@@ -7,18 +7,13 @@ import { IntroText } from "../components/IntroText/";
 import { FilterPage } from "../components/FilterPage";
 import { FilmLoad } from "../components/FilmLoad";
 import { tickedUpdate } from "../common/utils";
-
-const STAGES = {
-  TITLE: "title",
-  INTRO: "intro",
-  FILTER: "filter",
-  FILM: "film",
-};
+import { useWatchContext } from "components/WatchContext";
+import { STAGES } from "common/data";
 
 const PADDING_DESIRED = 64;
 
 const App = () => {
-  const [stage, setStage] = useState(STAGES.FILTER);
+  const { stage, resetSeen } = useWatchContext();
   const [showCredits, setShowCredits] = useState(false);
   const [scaleFactor, setScaleFactor] = useState(1);
 
@@ -103,6 +98,9 @@ const App = () => {
             </a>
           </p>
           <p>Did this instead of finding a film to watch</p>
+          <p>
+            <button onClick={() => resetSeen()}>Reset 'seen' films</button>
+          </p>
         </div>
       </footer>
     </div>

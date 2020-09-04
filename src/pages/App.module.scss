@@ -67,8 +67,27 @@
     }
   }
 
-  a {
+  a,
+  button {
+    padding: 0;
+    margin: 0;
+
+    border: 0;
+
+    background-color: transparent;
+
     color: var(--color-text);
+
+    text-decoration: underline;
+
+    cursor: pointer;
+
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus {
+      opacity: 0.5;
+    }
   }
 
   .left {
@@ -96,6 +115,8 @@
       text-align: right;
 
       padding-bottom: 0;
+
+      align-self: flex-start;
     }
   }
 }
@@ -106,11 +127,11 @@
   z-index: 2;
 
   top: 50%;
-  left: var(--size-unit-4);
+  left: var(--size-unit-2);
 
   -webkit-appearance: none;
 
-  padding: 0;
+  padding: var(--size-unit-2) 0;
   margin: 0;
 
   text-transform: uppercase;
@@ -138,6 +159,6 @@
   }
 
   .credits & {
-    left: var(--size-unit-2);
+    left: 0;
   }
 }
