@@ -1,0 +1,43 @@
+.wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.tip {
+  position: absolute;
+
+  bottom: calc(100% + var(--size-unit-2));
+  left: 50%;
+
+  width: auto;
+
+  white-space: pre;
+
+  transform: translate3d(-50%, 10px, 0);
+  opacity: 0;
+
+  color: var(--color-accent);
+
+  border: 1px solid var(--color-accent);
+  border-radius: 20px;
+
+  padding: 10px 16px;
+
+  background-color: white;
+
+  font-size: var(--font-size-small);
+
+  pointer-events: none;
+
+  transition: {
+    duration: 0.25s;
+    property: opacity, transform;
+  }
+
+  .display & {
+    opacity: 1;
+
+    transform: translate3d(-50%, 0, 0);
+  }
+}

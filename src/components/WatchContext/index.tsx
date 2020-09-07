@@ -4,8 +4,11 @@ import React, {
   useContext,
   useCallback,
   useEffect,
+  useRef,
 } from "react";
-import { STAGES } from "common/data";
+import { FILTER } from "common/data";
+import { useLocation, Redirect } from "react-router-dom";
+import { useToastContext } from "components/common/Toast";
 
 type SkipId = {
   id: string;
@@ -15,11 +18,13 @@ type SkipId = {
 interface WatchContextProps {
   directors: string[];
   setDirectors: (directors: string[]) => void;
-  stage: STAGES;
-  setStage: (stage: STAGES) => void;
-  skip: SkipId[];
+  genres: string[];
+  setGenres: (genres: string[]) => void;
+  getSkip: () => SkipId[];
   addSkip: (id: string, persist?: boolean) => void;
   resetSeen: () => void;
+  filterType: FILTER;
+  setFilterType: (filterType: FILTER) => void;
 }
 
 interface WatchContextContainerProps {
@@ -29,11 +34,13 @@ interface WatchContextContainerProps {
 const WatchContext = createContext<WatchContextProps>({
   directors: [],
   setDirectors: () => {},
-  stage: STAGES.TITLE,
-  setStage: () => {},
-  skip: [],
+  genres: [],
+  setGenres: () => {},
+  getSkip: () => [],
   addSkip: () => {},
   resetSeen: () => {},
+  filterType: FILTER.GENRE,
+  setFilterType: () => {},
 });
 
 const PERSIST_KEY = "skipmovies";
@@ -41,22 +48,26 @@ const PERSIST_KEY = "skipmovies";
 const WatchContextContainer: React.FC<WatchContextContainerProps> = ({
   children,
 }) => {
+  const { addToast } = useToastContext();
+  const location = useLocation();
+  const [filterType, setFilterType] = useState<FILTER>(FILTER.GENRE);
   const [directors, setDirectors] = useState<string[]>([]);
-  const [stage, setStage] = useState(STAGES.TITLE);
-  const [skip, setSkip] = useState<WatchContextProps["skip"]>([]);
+  const [genres, setGenres] = useState<string[]>([]);
+  const skip = useRef<SkipId[]>([]);
+  const [landed, setLanded] = useState<boolean>(false);
 
   const addSkip = useCallback(
     (id: string, persist = false) => {
-      if (!skip.find((s) => s.id === id)) {
+      if (!skip.current.find((s) => s.id === id)) {
         const skips = [
-          ...skip,
+          ...skip.current,
           {
             id,
             persist,
           },
         ];
 
-        setSkip(skips);
+        skip.current = skips;
 
         localStorage.setItem(PERSIST_KEY, skips.map((s) => s.id).join(","));
       }
@@ -66,30 +77,41 @@ const WatchContextContainer: React.FC<WatchContextContainerProps> = ({
 
   const resetSeen = useCallback(() => {
     localStorage.setItem(PERSIST_KEY, "");
+    addToast({ message: "Films reset" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const skips = localStorage.getItem(PERSIST_KEY);
 
     if (skips) {
-      setSkip(
-        skips.split(",").map((s) => ({
-          id: s,
-          persist: true,
-        }))
-      );
+      skip.current = skips.split(",").map((s) => ({
+        id: s,
+        persist: true,
+      }));
     }
+
+    setLanded(true);
   }, []);
 
   const value = {
     directors,
     setDirectors,
-    stage,
-    setStage,
-    skip,
+    genres,
+    setGenres,
+    getSkip: () => skip.current,
     addSkip,
     resetSeen,
+    filterType,
+    setFilterType,
   };
+
+  if (
+    (location.pathname === "/intro" && !landed) ||
+    (location.pathname === "/film" && !landed)
+  ) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <WatchContext.Provider value={value}>{children}</WatchContext.Provider>

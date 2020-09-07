@@ -112,6 +112,12 @@
 
   text-align: center;
 
+  a {
+    text-decoration: none;
+    color: inherit;
+    outline: 0;
+  }
+
   h2 {
     font-weight: var(--font-weight-body);
     text-transform: uppercase;

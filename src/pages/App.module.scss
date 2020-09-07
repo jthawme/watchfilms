@@ -84,9 +84,11 @@
 
     text-transform: uppercase;
 
+    outline: 0;
+
     &:hover,
     &:focus {
-      opacity: 0.5;
+      color: #9c3a25;
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, HTMLAttributes, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 
 import styles from "./LazyImage.module.scss";
@@ -28,16 +28,26 @@ const LazyImage: React.FC<LazyImageProps> = ({ src, className, alt }) => {
   });
 
   useEffect(() => {
+    let followThrough = true;
+
     setShow(false);
     loadImage(src).then(() => {
-      setLoadedImage(src);
+      if (followThrough) {
+        setLoadedImage(src);
+      }
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          setShow(true);
+          if (followThrough) {
+            setShow(true);
+          }
         });
       });
     });
+
+    return () => {
+      followThrough = false;
+    };
   }, [src]);
 
   return (

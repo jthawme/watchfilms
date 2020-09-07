@@ -1,32 +1,27 @@
-const { db } = require("./common");
+const { getFilmByIndex, returnSuccess, returnError } = require("./common");
 
 const MAX_TRIES = 5;
+
+function randomDirectorFromParams(directors) {
+  const split = directors.split(",");
+
+  return split[Math.floor(split.length * Math.random())];
+}
 
 function getFilmFromDirectors(directorIds, skip = [], tries = 0) {
   const splitIds = directorIds.split(",");
   const directorId = randomDirectorFromParams(directorIds);
 
-  return db.Client.query(
-    db.Query.Paginate(
-      db.Query.Match(db.Query.Index("films_by_director"), directorId.toString())
-    )
-  )
-    .then((refs) => {
-      const randomRef = refs.data[Math.floor(refs.data.length * Math.random())];
-
-      return db.Client.query(db.Query.Get(randomRef));
-    })
-    .then((ref) => {
+  return getFilmByIndex("films_by_director", directorId.toString()).then(
+    (ref) => {
       const film = ref.data;
 
       if (skip.indexOf(film.id.toString()) >= 0) {
         if (tries > MAX_TRIES) {
-          const newIds = directorIds.split(",");
+          if (splitIds.length > 1) {
+            splitIds.splice(splitIds.indexOf(directorId), 1);
 
-          if (newIds.length > 1) {
-            newIds.splice(newIds.indexOf(directorId), 1);
-
-            return getFilmFromDirectors(newIds.join(","), skip, 0);
+            return getFilmFromDirectors(splitIds.join(","), skip, 0);
           } else {
             throw new Error("Unable to find film");
           }
@@ -36,25 +31,8 @@ function getFilmFromDirectors(directorIds, skip = [], tries = 0) {
       }
 
       return film;
-    });
-}
-
-function randomDirectorFromParams(directors) {
-  const split = directors.split(",");
-
-  return split[Math.floor(split.length * Math.random())];
-}
-
-function returnError(message, statusCode = 400) {
-  return {
-    statusCode: statusCode,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message,
-    }),
-  };
+    }
+  );
 }
 
 exports.handler = async (event, context) => {
@@ -67,13 +45,7 @@ exports.handler = async (event, context) => {
   try {
     const film = await getFilmFromDirectors(directors, skip.split(","));
 
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(film),
-    };
+    return returnSuccess(film);
   } catch (e) {
     return returnError(e.message);
   }

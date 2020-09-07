@@ -31,7 +31,7 @@
 
   &:not([disabled]):hover,
   &:not([disabled]):focus {
-    opacity: 0.75;
+    color: var(--color-text-light);
 
     cursor: pointer;
   }

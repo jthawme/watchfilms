@@ -1,17 +1,30 @@
 import React, { useState, useCallback } from "react";
+import { useHistory } from "react-router-dom";
 
-import styles from "./FilterPage.module.scss";
 import { FilterSection } from "./FilterSection";
 
-import { DIRECTORS, STAGES } from "../../common/data";
+import { DIRECTORS, GENRES, FILTER } from "../../common/data";
 import { ActionArea } from "../ActionArea";
 import { useWatchContext } from "components/WatchContext";
+import { motion } from "framer-motion";
+import { defaultTransition } from "common/transition";
+import styles from "./FilterPage.module.scss";
 
 const FilterPage = () => {
-  const { setDirectors, setStage } = useWatchContext();
+  const history = useHistory();
+  const {
+    filterType,
+    setFilterType,
+    setDirectors,
+    setGenres,
+  } = useWatchContext();
 
-  const [filters, setFilters] = useState<{ directors: string[] }>({
+  const [filters, setFilters] = useState<{
+    directors: string[];
+    genres: string[];
+  }>({
     directors: [],
+    genres: [],
   });
 
   const updateFilter = useCallback(
@@ -26,18 +39,37 @@ const FilterPage = () => {
 
   const onNext = useCallback(() => {
     setDirectors(filters.directors);
-    setStage(STAGES.FILM);
-  }, [filters.directors, setDirectors, setStage]);
+    setGenres(filters.genres);
+    history.push("/film");
+  }, [setDirectors, filters.directors, filters.genres, setGenres, history]);
+
+  const switchFilter = useCallback(() => {
+    setFilterType(filterType === FILTER.GENRE ? FILTER.DIRECTOR : FILTER.GENRE);
+  }, [filterType, setFilterType]);
 
   return (
-    <div className={styles.page}>
+    <motion.div key="filter" {...defaultTransition} className={styles.page}>
       <div className={styles.content}>
-        <FilterSection
-          title="Director"
-          items={DIRECTORS}
-          selected={filters.directors}
-          onSelect={(selected: string[]) => updateFilter("directors", selected)}
-        />
+        {filterType === FILTER.GENRE && (
+          <FilterSection
+            title="Genre"
+            items={GENRES}
+            selected={filters.genres}
+            onSelect={(selected: string[]) => updateFilter("genres", selected)}
+          />
+        )}
+
+        {filterType === FILTER.DIRECTOR && (
+          <FilterSection
+            title="Director"
+            items={DIRECTORS}
+            selected={filters.directors}
+            onSelect={(selected: string[]) =>
+              updateFilter("directors", selected)
+            }
+            upsell
+          />
+        )}
       </div>
 
       <div className={styles.footer}>
@@ -47,12 +79,15 @@ const FilterPage = () => {
             onClick: () => onNext(),
           }}
           subAction={{
-            label: "Choose genre instead",
-            onClick: () => console.log("click genre"),
+            label:
+              filterType === FILTER.GENRE
+                ? "Choose Director instead"
+                : "Choose Genre instead",
+            onClick: () => switchFilter(),
           }}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

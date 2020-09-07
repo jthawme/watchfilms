@@ -13,6 +13,7 @@ interface FilterSectionProps {
   items: Array<FilterItem>;
   selected: string[];
   onSelect: (selected: string[]) => void;
+  upsell?: boolean;
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
@@ -20,6 +21,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   items,
   selected,
   onSelect,
+  upsell,
 }) => {
   const fuse = useRef(
     new Fuse(items, {
@@ -107,6 +109,16 @@ const FilterSection: React.FC<FilterSectionProps> = ({
             <span>{item.label}</span>
           </label>
         ))}
+        {upsell && (
+          <a
+            href={`https://twitter.com/intent/tweet?text=@jthawme You neeeeed to add this director to your site: `}
+            target="_blank"
+            rel="noreferrer noopener"
+            className={`${styles.item} ${styles.alt}`}
+          >
+            <span>Missing someone?</span>
+          </a>
+        )}
       </div>
     </section>
   );

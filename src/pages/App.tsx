@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
+import { AnimatePresence } from "framer-motion";
 
 import styles from "./App.module.scss";
 import { LeadTitle } from "../components/LeadTitle";
@@ -8,12 +9,17 @@ import { FilterPage } from "../components/FilterPage";
 import { FilmLoad } from "../components/FilmLoad";
 import { tickedUpdate } from "../common/utils";
 import { useWatchContext } from "components/WatchContext";
-import { STAGES } from "common/data";
+import { Switch, Route, useLocation } from "react-router-dom";
+import { useToastContext } from "components/common/Toast";
+import { Tooltip } from "components/common/Tooltip";
+import { Helmet } from "react-helmet";
 
 const PADDING_DESIRED = 64;
 
 const App = () => {
-  const { stage, resetSeen } = useWatchContext();
+  const { addToast } = useToastContext();
+  const location = useLocation();
+  const { resetSeen } = useWatchContext();
   const [showCredits, setShowCredits] = useState(false);
   const [scaleFactor, setScaleFactor] = useState(1);
 
@@ -36,6 +42,21 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    const cb = () => {
+      addToast({
+        message: "New version of the site. Please refresh",
+        duration: 10000,
+      });
+    };
+
+    window.addEventListener("sw-updated", cb, false);
+
+    return () => {
+      window.removeEventListener("sw-updated", cb);
+    };
+  }, [addToast]);
+
+  useEffect(() => {
     if (showCredits) {
       const cb = (e: any) => {
         if (e.keyCode === 27) {
@@ -51,6 +72,11 @@ const App = () => {
     }
   }, [showCredits]);
 
+  const onReset = useCallback(() => {
+    resetSeen();
+    setShowCredits(false);
+  }, [resetSeen]);
+
   const cls = classNames(styles.outer, {
     [styles.credits]: showCredits,
   });
@@ -59,18 +85,34 @@ const App = () => {
 
   return (
     <div className={cls}>
+      <Helmet
+        defaultTitle="Watch Better Films"
+        titleTemplate="%s – Watch Better Films"
+      />
       <main
         className={styles.page}
         style={pageStyle}
         onClick={showCredits ? () => setShowCredits(false) : undefined}
       >
-        {stage === STAGES.TITLE && <LeadTitle />}
-        {stage === STAGES.INTRO && <IntroText />}
-        {stage === STAGES.FILTER && <FilterPage />}
-        {stage === STAGES.FILM && <FilmLoad />}
+        <AnimatePresence exitBeforeEnter>
+          <Switch location={location} key={location.pathname}>
+            <Route path="/intro">
+              <IntroText />
+            </Route>
+            <Route path="/filter">
+              <FilterPage />
+            </Route>
+            <Route path="/film">
+              <FilmLoad />
+            </Route>
+            <Route exact path="/">
+              <LeadTitle />
+            </Route>
+          </Switch>
+        </AnimatePresence>
       </main>
 
-      {stage !== STAGES.TITLE && stage !== STAGES.INTRO && (
+      {location.pathname !== "/" && location.pathname !== "/intro" && (
         <button
           className={styles.creditsBtn}
           onClick={() => setShowCredits(!showCredits)}
@@ -99,7 +141,11 @@ const App = () => {
           </p>
           <p>Did this instead of finding a film to watch</p>
           <p>
-            <button onClick={() => resetSeen()}>Reset 'seen' films</button>
+            <button onClick={onReset}>
+              <Tooltip tip="Films will appear again">
+                Reset 'seen' films
+              </Tooltip>
+            </button>
           </p>
         </div>
       </footer>

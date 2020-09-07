@@ -1,0 +1,39 @@
+@import "~styles/common";
+
+.container {
+  position: fixed;
+
+  top: 0;
+  left: 25vw;
+
+  z-index: 10;
+
+  @include tablet {
+    left: 10vw;
+  }
+
+  @include desktop {
+    left: 25vw;
+  }
+}
+
+.toast {
+  width: 100vw;
+
+  background-color: var(--color-accent);
+  color: white;
+
+  text-transform: uppercase;
+
+  padding: var(--size-unit-4);
+
+  text-align: center;
+
+  @include tablet {
+    width: 80vw;
+  }
+
+  @include desktop {
+    width: 50vw;
+  }
+}

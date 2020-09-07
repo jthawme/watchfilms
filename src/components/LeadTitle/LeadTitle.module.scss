@@ -35,7 +35,6 @@
 
     margin: 0 auto;
 
-    max-width: 800px;
     height: auto;
   }
 }
@@ -46,6 +45,8 @@
 
   font-size: 22vw;
   line-height: 1;
+
+  overflow: hidden;
 
   &:nth-child(1) {
     grid-area: one;
@@ -64,6 +65,10 @@
     grid-area: three;
 
     align-self: flex-end;
+  }
+
+  span {
+    display: block;
   }
 
   @include tablet {
