@@ -86,6 +86,8 @@
 
     outline: 0;
 
+    text-align: left;
+
     &:hover,
     &:focus {
       color: #9c3a25;
@@ -93,7 +95,7 @@
   }
 
   .left {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-medium);
   }
 
   .right {

@@ -152,7 +152,9 @@
     display: block;
 
     font-family: var(--font-family-headline);
-    font-size: var(--font-size-xx-large);
+    font-size: var(--font-size-x-large);
+
+    text-align: center;
 
     line-height: 1;
 
@@ -177,6 +179,10 @@
         timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         property: transform;
       }
+    }
+
+    @include tablet {
+      font-size: var(--font-size-xx-large);
     }
   }
 

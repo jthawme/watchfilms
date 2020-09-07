@@ -53,9 +53,8 @@ const Tooltip: React.FC<TooltipProps> = ({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <span className={styles.tip}>{tip}</span>
-
       {children}
+      <span className={styles.tip}>{tip}</span>
     </span>
   );
 };
