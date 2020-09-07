@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
 import { AnimatePresence } from "framer-motion";
+import ReactGA from "react-ga";
 
 import styles from "./App.module.scss";
 import { LeadTitle } from "../components/LeadTitle";
@@ -71,6 +72,10 @@ const App = () => {
       };
     }
   }, [showCredits]);
+
+  useEffect(() => {
+    ReactGA.pageview(location.pathname);
+  }, [location]);
 
   const onReset = useCallback(() => {
     resetSeen();
