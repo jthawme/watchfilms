@@ -1,9 +1,9 @@
 [dev]
 command = "yarn start"
 functions = "functions"
-publish = "public"
+publish = "build"
 
 [build]
 command = "yarn build"
 functions = "functions"
-publish = "public"
+publish = "build"
