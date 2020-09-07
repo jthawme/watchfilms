@@ -79,8 +79,6 @@ const FilmLoad = () => {
       route = "/genre";
     }
 
-    console.log(performance.now());
-
     Promise.all([
       timer(2000),
       fetch(`${endpoint}${route}`, {
