@@ -13,6 +13,8 @@
     "left"
     "footer";
 
+  min-height: 100%;
+
   @include tablet {
     grid-template-areas:
       "header header"
@@ -20,8 +22,6 @@
       "footer footer";
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr auto;
-
-    height: 100vh;
   }
 }
 
@@ -145,6 +145,8 @@
     font-family: var(--font-family-headline);
     font-size: var(--font-size-xx-large);
 
+    word-break: break-all;
+
     line-height: 1;
 
     margin-bottom: var(--size-unit-4);
@@ -190,6 +192,10 @@
   @include tablet {
     padding: 0 var(--size-unit-6);
     padding-left: var(--size-unit-12);
+
+    h1 {
+      word-break: normal;
+    }
 
     text-align: right;
   }
