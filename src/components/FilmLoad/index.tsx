@@ -10,9 +10,9 @@ import { defaultTransition } from "common/transition";
 import { useToastContext } from "components/common/Toast";
 import { ToastType } from "components/common/Toast/common";
 
-const endpoint = "/.netlify/functions";
+const endpoint = "/api";
 
-const timer = (delay = 1000) => {
+const timer = (delay = 1000): Promise<void> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
@@ -126,6 +126,7 @@ const FilmLoad = () => {
 
   const onSkip = useCallback(() => {
     if (film) {
+      (window as any).plausible("Film Skipped");
       addSkip(film.id, true);
       addToast({
         message: "This film won't appear again",

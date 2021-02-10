@@ -44,6 +44,7 @@ const FilterPage = () => {
   }, [setDirectors, filters.directors, filters.genres, setGenres, history]);
 
   const switchFilter = useCallback(() => {
+    (window as any).plausible("Filter switched");
     setFilterType(filterType === FILTER.GENRE ? FILTER.DIRECTOR : FILTER.GENRE);
   }, [filterType, setFilterType]);
 
