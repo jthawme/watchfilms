@@ -90,7 +90,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
           <input
             onChange={triggerFilter}
             type="text"
-            placeholder="Filter"
+            placeholder="Search"
             value={filterText}
             className={!!filterText ? styles.hasText : ""}
           />
@@ -98,27 +98,29 @@ const FilterSection: React.FC<FilterSectionProps> = ({
       </header>
 
       <div className={styles.pool}>
-        {checkedItems.map((item) => (
-          <label key={item.value} className={styles.item}>
-            <input
-              onChange={(e) => reportSelected(item.value)}
-              type="checkbox"
-              name={item.value}
-              checked={item.selected}
-            />
-            <span>{item.label}</span>
-          </label>
-        ))}
-        {upsell && (
-          <a
-            href={`https://twitter.com/intent/tweet?text=@jthawme You neeeeed to add this director to your site: `}
-            target="_blank"
-            rel="noreferrer noopener"
-            className={`${styles.item} ${styles.alt}`}
-          >
-            <span>Missing someone?</span>
-          </a>
-        )}
+        <div className={styles.poolItems}>
+          {checkedItems.map((item) => (
+            <label key={item.value} className={styles.item}>
+              <input
+                onChange={(e) => reportSelected(item.value)}
+                type="checkbox"
+                name={item.value}
+                checked={item.selected}
+              />
+              <span>{item.label}</span>
+            </label>
+          ))}
+          {upsell && (
+            <a
+              href={`https://twitter.com/intent/tweet?text=@jthawme You neeeeed to add this director to your site: `}
+              target="_blank"
+              rel="noreferrer noopener"
+              className={`${styles.item} ${styles.alt}`}
+            >
+              <span>Missing someone?</span>
+            </a>
+          )}
+        </div>
       </div>
     </section>
   );

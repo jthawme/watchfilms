@@ -10,6 +10,11 @@
 }
 
 .section {
+  display: flex;
+
+  flex-direction: column;
+  flex-grow: 1;
+
   margin: 0 auto;
 
   @include tablet {
@@ -19,6 +24,10 @@
 }
 
 .content {
+  display: flex;
+
+  flex-direction: column;
+
   padding: var(--size-unit-8) var(--size-unit-6) var(--size-unit-10);
 
   flex-grow: 1;
@@ -121,6 +130,15 @@
 }
 
 .pool {
+  display: flex;
+
+  flex-grow: 1;
+
+  flex-direction: column;
+  justify-content: center;
+}
+
+.poolItems {
   display: flex;
 
   justify-content: center;
