@@ -27,6 +27,8 @@ const FilmSelection: React.FC<FilmSelectionProps> = ({
   onSkip,
   canRespin,
   imdb,
+  score,
+  rottenTomatoes,
 }) => {
   const genre = useMemo(() => {
     return genres.filter((g) => g).shift();
@@ -81,6 +83,16 @@ const FilmSelection: React.FC<FilmSelectionProps> = ({
           </p>
           <p>
             <button onClick={() => setShowSynopsis(true)}>Synopsis</button>
+          </p>
+          <p>
+            <span className={styles.scores}>
+              <span data-title="Score">{score}</span>
+              {rottenTomatoes >= 0 && (
+                <span className={styles.rs} data-title="Rotten Tomatoes">
+                  {rottenTomatoes}%
+                </span>
+              )}
+            </span>
           </p>
         </div>
         <div className={styles.right}>

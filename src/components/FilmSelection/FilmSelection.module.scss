@@ -257,3 +257,31 @@
 .director {
   font-size: var(--font-size-medium);
 }
+
+.scores {
+  display: inline-block;
+  margin-top: 1em;
+
+  span {
+    display: inline-block;
+
+    margin: 0 1em;
+    font-size: var(--font-size-small);
+
+    &:before {
+      display: block;
+
+      content: attr(data-title);
+    }
+  }
+
+  .rs {
+    color: var(--color-accent);
+  }
+
+  @include tablet {
+    span {
+      margin: 0 0 0 1em;
+    }
+  }
+}

@@ -187,6 +187,8 @@ export interface Film {
   date: string;
   director: string;
   imdb: string;
+  score: number;
+  rottenTomatoes: number;
 }
 
 export interface QueryFilter {
