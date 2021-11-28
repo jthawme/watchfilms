@@ -105,20 +105,32 @@ export const GENRES = [
     value: "Adventure",
   },
   {
+    label: "Animation",
+    value: "Animation",
+  },
+  {
     label: "Comedy",
     value: "Comedy",
+  },
+  {
+    label: "Family",
+    value: "Family",
   },
   {
     label: "Drama",
     value: "Drama",
   },
   {
-    label: "Animation",
-    value: "Animation",
-  },
-  {
     label: "Romance",
     value: "Romance",
+  },
+  {
+    label: "Crime",
+    value: "Crime",
+  },
+  {
+    label: "Music",
+    value: "Music",
   },
   {
     label: "Documentary",
@@ -129,17 +141,13 @@ export const GENRES = [
     value: "Fantasy",
   },
   {
-    label: "Crime",
-    value: "Crime",
-  },
-  {
     label: "Science Fiction",
     value: "Science Fiction",
   },
-  {
-    label: "Music",
-    value: "Music",
-  },
+  // {
+  //     "label": "TV Movie",
+  //     "value": "TV Movie"
+  // },
   {
     label: "Action",
     value: "Action",
@@ -155,6 +163,18 @@ export const GENRES = [
   {
     label: "Western",
     value: "Western",
+  },
+  {
+    label: "Mystery",
+    value: "Mystery",
+  },
+  {
+    label: "Horror",
+    value: "Horror",
+  },
+  {
+    label: "History",
+    value: "History",
   },
 ].sort((a, b) => {
   if (a.label < b.label) {
