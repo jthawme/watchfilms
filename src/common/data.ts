@@ -131,6 +131,10 @@ export const DIRECTORS = [
     label: "Roy Andersson",
     value: 45791,
   },
+  {
+    label: "Martin Scorsese",
+    value: 1032,
+  },
 ]
   .map((item) => ({
     ...item,
