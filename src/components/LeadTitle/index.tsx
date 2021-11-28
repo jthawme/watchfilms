@@ -5,6 +5,8 @@ import { useHistory } from "react-router-dom";
 import styles from "./LeadTitle.module.scss";
 import { defaultTransition } from "common/transition";
 
+const FIRST_KEY = "moviesfirst";
+
 const showWords: Variants = {
   initial: {
     y: "100%",
@@ -22,8 +24,16 @@ const LeadTitle = () => {
   const history = useHistory();
 
   const onComplete = useCallback(() => {
+    const isNotFirst = localStorage.getItem(FIRST_KEY);
+
+    localStorage.setItem(FIRST_KEY, "1");
+
     setTimeout(() => {
-      history.push("/intro");
+      if (isNotFirst) {
+        history.push("/filter");
+      } else {
+        history.push("/intro");
+      }
     }, 1000);
   }, [history]);
 

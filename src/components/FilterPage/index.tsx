@@ -12,12 +12,8 @@ import styles from "./FilterPage.module.scss";
 
 const FilterPage = () => {
   const history = useHistory();
-  const {
-    filterType,
-    setFilterType,
-    setDirectors,
-    setGenres,
-  } = useWatchContext();
+  const { filterType, setFilterType, setDirectors, setGenres } =
+    useWatchContext();
 
   const [filters, setFilters] = useState<{
     directors: string[];
@@ -53,6 +49,7 @@ const FilterPage = () => {
       <div className={styles.content}>
         {filterType === FILTER.GENRE && (
           <FilterSection
+            onTitleClick={() => switchFilter()}
             title="Genre"
             items={GENRES}
             selected={filters.genres}
@@ -62,6 +59,7 @@ const FilterPage = () => {
 
         {filterType === FILTER.DIRECTOR && (
           <FilterSection
+            onTitleClick={() => switchFilter()}
             title="Director"
             items={DIRECTORS}
             selected={filters.directors}

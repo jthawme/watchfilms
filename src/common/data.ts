@@ -134,7 +134,7 @@ export const DIRECTORS = [
 ]
   .map((item) => ({
     ...item,
-    value: item.toString(),
+    value: item.value.toString(),
   }))
   .sort((a, b) => {
     if (a.label < b.label) {

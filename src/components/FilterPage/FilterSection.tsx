@@ -14,6 +14,7 @@ interface FilterSectionProps {
   selected: string[];
   onSelect: (selected: string[]) => void;
   upsell?: boolean;
+  onTitleClick: () => void;
 }
 
 const FilterSection: React.FC<FilterSectionProps> = ({
@@ -22,6 +23,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   selected,
   onSelect,
   upsell,
+  onTitleClick,
 }) => {
   const fuse = useRef(
     new Fuse(items, {
@@ -78,7 +80,9 @@ const FilterSection: React.FC<FilterSectionProps> = ({
   return (
     <section className={styles.section}>
       <header className={styles.header}>
-        <h2 className={styles.title}>{title}</h2>
+        <h2 className={styles.title} onClick={onTitleClick}>
+          {title}
+        </h2>
         <div className={styles.middle}>
           {selected.length > 0 ? (
             <span className={styles.selectedTitle}>
