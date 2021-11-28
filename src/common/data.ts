@@ -131,17 +131,22 @@ export const DIRECTORS = [
     label: "Roy Andersson",
     value: 45791,
   },
-].sort((a, b) => {
-  if (a.label < b.label) {
-    return -1;
-  }
+]
+  .map((item) => ({
+    ...item,
+    value: item.toString(),
+  }))
+  .sort((a, b) => {
+    if (a.label < b.label) {
+      return -1;
+    }
 
-  if (a.label > b.label) {
-    return 1;
-  }
+    if (a.label > b.label) {
+      return 1;
+    }
 
-  return 0;
-});
+    return 0;
+  });
 
 export const GENRES = [
   {
