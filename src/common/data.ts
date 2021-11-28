@@ -1,91 +1,135 @@
 export const DIRECTORS = [
   {
     label: "Wes Anderson",
-    value: "5655",
+    value: 5655,
   },
   {
     label: "Spike Jonze",
-    value: "5953",
+    value: 5953,
   },
   {
     label: "Jean-Luc Godard",
-    value: "3776",
+    value: 3776,
   },
   {
     label: "Sofia Coppola",
-    value: "1769",
+    value: 1769,
   },
   {
     label: "Jim Jarmusch",
-    value: "4429",
+    value: 4429,
   },
   {
     label: "Stanley Kubrick",
-    value: "240",
+    value: 240,
   },
   {
-    label: "Akira Kurosowa",
-    value: "5026",
+    label: "Akira Kurosawa",
+    value: 5026,
   },
   {
     label: "David Lynch",
-    value: "5602",
+    value: 5602,
   },
   {
     label: "David Fincher",
-    value: "7467",
+    value: 7467,
   },
   {
     label: "Ethan Coen",
-    value: "1224",
+    value: 1224,
   },
   {
     label: "Spike Lee",
-    value: "5281",
+    value: 5281,
   },
   {
     label: "Hayao Miyazaki",
-    value: "608",
+    value: 608,
   },
   {
     label: "Gaspar Noé",
-    value: "14597",
+    value: 14597,
   },
   {
     label: "Richard Linklater",
-    value: "564",
+    value: 564,
   },
   {
     label: "Paul Thomas Anderson",
-    value: "4762",
+    value: 4762,
   },
   {
     label: "Quentin Tarantino",
-    value: "138",
+    value: 138,
   },
   {
-    label: "Wong Kar Wai",
-    value: "12453",
+    label: "Wong Kar-wai",
+    value: 12453,
   },
   {
-    label: "Bong Joon Ho",
-    value: "21684",
+    label: "Bong Joon-ho",
+    value: 21684,
   },
   {
-    label: "Park Chan Wook",
-    value: "10099",
+    label: "Park Chan-wook",
+    value: 10099,
   },
   {
     label: "Alfred Hitchcock",
-    value: "2636",
-  },
-  {
-    label: "Greta Gerwig",
-    value: "45400",
+    value: 2636,
   },
   {
     label: "Noah Baumbach",
-    value: "5656",
+    value: 5656,
+  },
+  {
+    label: "Greta Gerwig",
+    value: 45400,
+  },
+  {
+    label: "Edgar Wright",
+    value: 11090,
+  },
+  {
+    label: "Jordan Peele",
+    value: 291263,
+  },
+  {
+    label: "Ari Aster",
+    value: 1145520,
+  },
+  {
+    label: "Robert Eggers",
+    value: 138781,
+  },
+  {
+    label: "John Carpenter",
+    value: 11770,
+  },
+  {
+    label: "Wes Craven",
+    value: 5140,
+  },
+  {
+    label: "Lars von Trier",
+    value: 42,
+  },
+  {
+    label: "Darren Aronofsky",
+    value: 6431,
+  },
+  {
+    label: "Michael Haneke",
+    value: 6011,
+  },
+  {
+    label: "Nicolas Winding Refn",
+    value: 21183,
+  },
+  {
+    label: "Roy Andersson",
+    value: 45791,
   },
 ].sort((a, b) => {
   if (a.label < b.label) {
