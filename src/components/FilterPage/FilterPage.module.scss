@@ -179,7 +179,7 @@
     &::before {
       position: absolute;
 
-      top: calc(50% + var(--size-unit-1));
+      bottom: 0;
       left: calc(var(--size-unit-2) * -1);
 
       width: calc(100% + var(--size-unit-4));
@@ -210,6 +210,10 @@
 
   input:checked ~ span::before {
     transform: scaleX(1);
+  }
+
+  input:checked ~ span {
+    color: var(--color-accent);
   }
 }
 

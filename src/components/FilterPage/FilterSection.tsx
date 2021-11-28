@@ -80,10 +80,12 @@ const FilterSection: React.FC<FilterSectionProps> = ({
       <header className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
         <div className={styles.middle}>
-          {selected.length > 0 && (
+          {selected.length > 0 ? (
             <span className={styles.selectedTitle}>
               {selected.length} selected
             </span>
+          ) : (
+            <span className={styles.selectedTitle}>Click to select</span>
           )}
         </div>
         <div className={styles.filter}>
