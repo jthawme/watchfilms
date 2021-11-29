@@ -13,9 +13,14 @@ type ActionItem = {
 interface ActionAreaProps {
   action: ActionItem;
   subAction?: ActionItem;
+  split?: string;
 }
 
-const ActionArea: React.FC<ActionAreaProps> = ({ action, subAction }) => {
+const ActionArea: React.FC<ActionAreaProps> = ({
+  action,
+  subAction,
+  split,
+}) => {
   return (
     <div className={styles.action}>
       <button
@@ -31,6 +36,7 @@ const ActionArea: React.FC<ActionAreaProps> = ({ action, subAction }) => {
           action.label || "Click"
         )}
       </button>
+      {split && <span className={styles.split}>{split}</span>}
       {subAction && (
         <button
           className={`${styles.btn} ${styles.sub}`}

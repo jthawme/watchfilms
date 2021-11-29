@@ -1,3 +1,5 @@
+@import "~styles/common";
+
 .action {
   display: flex;
 
@@ -39,5 +41,18 @@
   &.sub {
     font-size: var(--font-size-small);
     margin-bottom: 0;
+  }
+}
+
+.split {
+  display: block;
+
+  margin: 0 0 var(--size-unit-3);
+
+  text-transform: uppercase;
+  font-size: var(--font-size-small);
+
+  @include tablet {
+    display: none;
   }
 }

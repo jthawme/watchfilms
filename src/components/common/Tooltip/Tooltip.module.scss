@@ -26,6 +26,14 @@
 
   pointer-events: none;
 
+  &:before {
+    content: "(";
+  }
+
+  &:after {
+    content: ")";
+  }
+
   @include tablet {
     position: absolute;
 
@@ -44,6 +52,11 @@
     transition: {
       duration: 0.25s;
       property: opacity, transform;
+    }
+
+    &:before,
+    &:after {
+      display: none;
     }
 
     .display & {

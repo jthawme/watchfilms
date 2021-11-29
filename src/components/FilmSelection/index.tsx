@@ -109,6 +109,7 @@ const FilmSelection: React.FC<FilmSelectionProps> = ({
               onClick: onRespin,
               disabled: !canRespin,
             }}
+            split="Or"
             subAction={{
               label: "I've seen this film already",
               onClick: onSkip,
