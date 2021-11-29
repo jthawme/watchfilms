@@ -135,6 +135,58 @@ export const DIRECTORS = [
     label: "Martin Scorsese",
     value: 1032,
   },
+  {
+    label: "Andrei Tarkovsky",
+    value: 8452,
+  },
+  {
+    label: "Denis Villeneuve",
+    value: 137427,
+  },
+  {
+    label: "Alejandro González Iñárritu",
+    value: 223,
+  },
+  {
+    label: "Sidney Lumet",
+    value: 39996,
+  },
+  {
+    label: "Ridley Scott",
+    value: 578,
+  },
+  {
+    label: "Francis Ford Coppola",
+    value: 1776,
+  },
+  {
+    label: "Miloš Forman",
+    value: 3974,
+  },
+  {
+    label: "Terry Gilliam",
+    value: 280,
+  },
+  {
+    label: "Sergio Leone",
+    value: 4385,
+  },
+  {
+    label: "Federico Fellini",
+    value: 4415,
+  },
+  {
+    label: "Alfonso Cuarón",
+    value: 11218,
+  },
+  {
+    label: "Kathryn Bigelow",
+    value: 14392,
+  },
+  {
+    label: "Jacques Tati",
+    value: 5763,
+  },
 ]
   .map((item) => ({
     ...item,
