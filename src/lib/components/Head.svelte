@@ -1,4 +1,6 @@
 <script>
+	import { pageTitle } from '$lib/utils.js';
+
 	// @ts-nocheck
 
 	/** @type {string} */
@@ -26,7 +28,7 @@
 	/** @type {string | null} */
 	export let defaultFacebookImage = '/social/social.facebook.png';
 
-	$: formattedTitle = title ? [title, defaultTitle].join(seperator) : defaultTitle;
+	$: formattedTitle = pageTitle(title, defaultTitle, seperator);
 	$: resolvedDescription = description || defaultDescription;
 	$: resolvedTwitterImage = [domain, image || defaultImage].join('');
 	$: resolvedFacebookImage = [domain, image || defaultFacebookImage].join('');

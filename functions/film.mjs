@@ -18,7 +18,13 @@ const handler = async (event, { geo }) => {
 		);
 	}
 
-	const film = await getFilm(parseInt(new URL(event.url).searchParams.get('id')), geo.country.code);
+	console.log('Oi sunshine', geo.country.code);
+
+	const film = await getFilm(
+		parseInt(new URL(event.url).searchParams.get('id')),
+		geo.country.code,
+		geo
+	);
 
 	return Response.json({
 		film

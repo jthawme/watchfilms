@@ -67,7 +67,7 @@ export const getRandom = async (genres, people, avoid = []) => {
  * @param {string} [country]
  * @returns {Promise<any>}
  */
-export const getFilm = async (id, country = 'GB') => {
+export const getFilm = async (id, country = 'GB', geo = {}) => {
 	const film = await import(`../data/film/${id}.json`).then((mod) => mod.default);
 
 	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
@@ -77,6 +77,7 @@ export const getFilm = async (id, country = 'GB') => {
 	return film
 		? {
 				...film,
+				geo,
 				providers: providers ? providers[country ?? 'GB'] : null
 			}
 		: null;

@@ -145,6 +145,7 @@
 
 	$: innerPadding = 60;
 	$: scale = (windowWidth - innerPadding * 2) / windowWidth;
+	$: bottom = windowHeight - windowHeight * scale + 60;
 
 	$: showLayout = $page.url.pathname !== '/';
 
@@ -172,7 +173,7 @@
 	class:display
 	bind:this={wrapperEl}
 	class="wrapper"
-	style={`--scale: ${scale}`}
+	style={`--scale: ${scale}; --bottom: ${bottom};`}
 	class:showLayout
 >
 	<Manager />
@@ -248,7 +249,8 @@
 			height: 100dvh;
 			width: 100vw;
 
-			margin-bottom: calc((60px + var(--inner-padding)) * -1);
+			// margin-bottom: calc((60px + var(--inner-padding)) * -1);
+			margin-bottom: calc(var(--bottom) * -1px);
 		}
 	}
 

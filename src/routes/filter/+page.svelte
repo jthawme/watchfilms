@@ -6,7 +6,7 @@
 	import FilterPill from '$lib/components/UI/FilterPill.svelte';
 	import { TYPE, TYPE_LABEL } from '$lib/constants.js';
 	import { store as Journey } from '$lib/store/journey.js';
-	import { getPersistedValue, persistValue, validateType } from '$lib/utils.js';
+	import { getPersistedValue, pageTitle, persistValue, validateType } from '$lib/utils.js';
 	import { onMount } from 'svelte';
 
 	export let data;
@@ -114,7 +114,9 @@
 	$: items = filterItems(currentType, searchValue);
 </script>
 
-<Head title="Filter" />
+<svelte:head>
+	<title>{pageTitle('Filter')}</title>
+</svelte:head>
 
 <div class="wrapper">
 	<header>
@@ -157,8 +159,14 @@
 		</div>
 	{/if}
 
-	<div class="pool">
-		<ButtonPool {items} bind:selected={selectedIds} />
+	<div class="pool pool--full">
+		<ButtonPool {items} bind:selected={selectedIds}>
+			{#if currentType === TYPE.DIRECTOR}
+				<a href="mailto:hi+films@jthaw.me?subject=Add a director" class="missing headline">
+					Missing someone?
+				</a>
+			{/if}
+		</ButtonPool>
 	</div>
 
 	<FilterPill disabled={selectedIds.length === 0} on:start={onStart} bind:selected={selectedIds} />
@@ -171,7 +179,7 @@
 		max-width: calc(950px + (var(--inner-padding) * 2));
 		width: 100%;
 
-		padding: var(--inner-padding) var(--inner-padding) var(--inner-padding);
+		padding: var(--inner-padding) var(--inner-padding) 100px;
 
 		margin: auto;
 
@@ -188,6 +196,10 @@
 
 			background: linear-gradient(to top, var(--color-bg), var(--color-bg-transparent));
 		}
+
+		@include tablet {
+			padding: var(--inner-padding);
+		}
 	}
 
 	header {
@@ -198,13 +210,16 @@
 
 		display: grid;
 
-		grid-template-columns: 1fr auto;
+		grid-template-columns: 1fr;
+		row-gap: 10px;
 
 		background-color: var(--color-bg-opacity);
 
 		z-index: 2;
 
 		.left {
+			text-align: center;
+
 			button {
 				display: inline-block;
 
@@ -220,14 +235,24 @@
 
 		.right {
 		}
+
+		@include large-mobile {
+			grid-template-columns: 1fr auto;
+
+			.left {
+				text-align: left;
+			}
+		}
 	}
 
 	.search {
 		input {
+			width: 100%;
+
 			background-color: transparent;
 
 			appearance: none;
-			border-radius: none;
+			border-radius: 0;
 
 			border: none;
 			border-bottom: 1px solid currentColor;
@@ -249,5 +274,29 @@
 
 	.pool {
 		margin: 40px 0;
+
+		&--full {
+			@media screen and (max-width: $tablet-breakpoint) {
+				--pool-gap: 0.5em 0.8em;
+				--pool-font-size: var(--font-size-medium);
+			}
+		}
+	}
+
+	.missing {
+		color: var(--color-light);
+
+		text-decoration: none;
+
+		border-bottom: 1px solid currentColor;
+
+		transition: {
+			property: color;
+			duration: 0.15s;
+		}
+
+		@include hover {
+			color: var(--color-accent);
+		}
 	}
 </style>

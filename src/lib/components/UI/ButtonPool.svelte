@@ -37,10 +37,11 @@
 			data-id={item.id}>{item.text}</button
 		>
 	{/each}
-
 	{#if items.length === 0}
 		<span class="empty">No items</span>
 	{/if}
+
+	<slot />
 </div>
 
 <style lang="scss">
@@ -51,8 +52,8 @@
 
 		flex-wrap: wrap;
 
-		font-size: clamp(var(--font-size-large), 3vw, var(--font-size-x-large));
-		gap: 0.1em 0.75em;
+		font-size: var(--pool-font-size, clamp(var(--font-size-large), 3vw, var(--font-size-x-large)));
+		gap: var(--pool-gap, 0.1em 0.75em);
 
 		&.withTitle {
 			border-bottom: 1px solid var(--color-x-light);
@@ -133,5 +134,11 @@
 
 			color: var(--color-accent);
 		}
+	}
+
+	.empty {
+		width: 100%;
+
+		text-align: center;
 	}
 </style>

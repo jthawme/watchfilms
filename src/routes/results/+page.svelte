@@ -5,6 +5,7 @@
 	import FilmRow from '$lib/components/UI/FilmRow.svelte';
 	import Head from '$lib/components/Head.svelte';
 	import { FILMS_LENGTH } from '$lib/constants.js';
+	import { pageTitle } from '$lib/utils.js';
 
 	let mounted = false;
 
@@ -18,7 +19,9 @@
 	});
 </script>
 
-<Head title="Results" />
+<svelte:head>
+	<title>{pageTitle('Results')}</title>
+</svelte:head>
 
 <div class="page">
 	{#if mounted}

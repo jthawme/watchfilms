@@ -1,13 +1,9 @@
 <script>
 	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import Head from '$lib/components/Head.svelte';
-	import { getPersistedValue, persistValue, timer } from '$lib/utils.js';
+	import { getPersistedValue, pageTitle, persistValue, timer } from '$lib/utils.js';
 
 	let mount = false;
-
-	beforeNavigate(() => {
-		mount = false;
-	});
 
 	afterNavigate(() => {
 		mount = true;
@@ -28,7 +24,9 @@
 	}
 </script>
 
-<Head title="" />
+<svelte:head>
+	<title>{pageTitle('')}</title>
+</svelte:head>
 
 <div class="page" class:mount>
 	<div class="row row-one">
@@ -68,6 +66,7 @@
 		font-size: Min(25vh, 20vw);
 
 		&-one {
+			align-items: flex-start;
 			justify-content: flex-start;
 		}
 

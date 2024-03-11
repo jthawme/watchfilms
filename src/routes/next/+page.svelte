@@ -4,7 +4,7 @@
 	import { FILMS_LENGTH } from '$lib/constants.js';
 	import { store as Journey } from '$lib/store/journey.js';
 	import { store as Messages } from '$lib/store/messages.js';
-	import { timer } from '$lib/utils.js';
+	import { pageTitle, timer } from '$lib/utils.js';
 	import { onMount } from 'svelte';
 
 	let mounted = false;
@@ -64,7 +64,9 @@
 	});
 </script>
 
-<Head title="" />
+<svelte:head>
+	<title>{pageTitle('')}</title>
+</svelte:head>
 
 <div class="page" class:mounted>
 	<div class="numbers">

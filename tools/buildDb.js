@@ -175,7 +175,11 @@ const force = process.argv.some((item) => item === '-f');
 		await fs.ensureDir(path.join(__dirname, `../data/film/`));
 
 		const movies = await FullMovies()
-			.select('movie.*', db.raw(`GROUP_CONCAT(genre.name) as genre`), 'person.name as person')
+			.select(
+				'movie.*',
+				db.raw(`GROUP_CONCAT(DISTINCT genre.name) as genre`),
+				'person.name as person'
+			)
 			.groupBy('movie.id');
 
 		return promiseRunner(movies, async (movie) => {

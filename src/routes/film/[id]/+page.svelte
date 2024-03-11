@@ -1,5 +1,5 @@
 <script>
-	import { goto } from '$app/navigation';
+	import { goto, onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Head from '$lib/components/Head.svelte';
 	import FilmContent from '$lib/components/UI/FilmContent.svelte';
@@ -7,7 +7,8 @@
 	import Pill from '$lib/components/UI/Pill.svelte';
 	import { store as Journey } from '$lib/store/journey.js';
 	import { store as Messages } from '$lib/store/messages.js';
-	import { plausible, tmdbImage } from '$lib/utils.js';
+	import { pageTitle, plausible, tmdbImage } from '$lib/utils.js';
+	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -85,6 +86,11 @@
 		}
 	}
 
+	let filmsLength = 0;
+	onMount(() => {
+		filmsLength = $Journey.films.length;
+	});
+
 	/**
 	 * Store the film in the store as one of the three, then go to the next page
 	 */
@@ -96,7 +102,9 @@
 	$: saved = $Journey.want.some((item) => item.id === data.id);
 </script>
 
-<Head title={data.title} />
+<svelte:head>
+	<title>{pageTitle(data.title)}</title>
+</svelte:head>
 
 <div class="page">
 	<Overlay show={showSynopsis} on:close={toggleSynopsis}>
@@ -168,13 +176,17 @@
 			<button class="std save btn-reset" on:click={onRemove}>Remove from saved</button>
 		{/if}
 
-		<img loading="lazy" on:load={onImageLoad} src={tmdbImage(data.poster)} alt="" />
+		{#if data.poster}<img
+				loading="lazy"
+				on:load={onImageLoad}
+				src={tmdbImage(data.poster)}
+				alt=""
+			/>{/if}
 
 		<button class="std seen btn-reset" on:click={onSeen}>Seen this film</button>
 		{#if $Journey.started}
 			<div class="next">
-				<Pill on:click={onNext}>{$Journey.films.length === 2 ? 'View Films →' : 'Next Film →'}</Pill
-				>
+				<Pill on:click={onNext}>{filmsLength === 2 ? 'View Films →' : 'Next Film →'}</Pill>
 			</div>
 		{:else}
 			<div class="next">
@@ -331,24 +343,13 @@
 			width: 100%;
 
 			iframe {
-				width: 50%;
+				width: 100%;
 				aspect-ratio: 16/9;
+
+				@include tablet {
+					width: 50%;
+				}
 			}
-			// position: absolute;
-
-			// top: 50%;
-			// left: 50%;
-
-			// width: 50%;
-
-			// transform: translate3d(-50%, -50%, 0);
-
-			// aspect-ratio: 16/9;
-
-			// iframe {
-			// 	width: 100%;
-			// 	height: 100%;
-			// }
 		}
 	}
 
@@ -360,7 +361,7 @@
 		gap: 10px;
 		text-align: center;
 
-		padding: 20px 0;
+		padding: 20px 0 0;
 
 		@include tablet {
 			text-align: right;

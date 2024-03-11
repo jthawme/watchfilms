@@ -8,7 +8,7 @@ Install with `npm install` and then run with `npm run dev`
 
 ## Data
 
-The data is all stored in an sqlite database [here](functions/main.sqlite). You'll notice in that file too there are 2 json files that populate the filter page, this is so that I don't need to make any needless queries on the DB. In fact if you believe there to be problems with querying a DB anyway, please get in touch to tell me what to do differently.
+The data is all stored in an sqlite database [here](functions/main.sqlite). You'll notice in that file too there are 2 json files that populate the filter page, this is so that I don't need to make any needless queries on the DB. Originally the site was ran off of that DB and it was great, but when deployed it was extremely slow, so now it builds static files of everything which is boring.
 
 The data needs to be rebuilt locally, so I set a calendar reminder to run [this file](tools/buildDb.js) every month, to get new releases. Very old school I know, but I deploy the site on netlify and it just felt the easiest option for me (as the file directory is rightfully a little weird when deploying a static site with functions etc.)
 

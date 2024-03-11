@@ -555,3 +555,13 @@ export const plausible = (evt, opts = {}) => {
 
 	window.plausible(evt, opts);
 };
+
+/**
+ *
+ * @param {string} title
+ * @param {string} [defaultTitle]
+ * @param {string} [seperator]
+ */
+export const pageTitle = (title, defaultTitle = 'Watch Better Films', seperator = ' – ') => {
+	return title ? [title, defaultTitle].join(seperator) : defaultTitle;
+};

@@ -20,8 +20,8 @@
 <div class="pill-wrapper">
 	<div class="pill">
 		<div class="pill-left">
-			<span class="accent">{selected.length} Selected</span>
-			<button class="btn-reset light clear" on:click={onClear} />
+			<span>{selected.length} Selected</span>
+			<button class="btn-reset clear" on:click={onClear} />
 		</div>
 
 		<button {disabled} class:disabled class="pill-right btn-reset" on:click={onStart}>
@@ -43,7 +43,7 @@
 
 		padding: 10px;
 
-		@include tablet {
+		@include large-mobile {
 			position: sticky;
 
 			bottom: var(--outer-padding);
@@ -52,19 +52,17 @@
 	}
 
 	.pill {
-		border: 1px solid var(--color-accent);
-		border-radius: 50px;
-
 		display: grid;
 
 		grid-template-columns: 1fr;
 
-		background-color: var(--color-bg);
-
 		isolation: isolate;
 		overflow: hidden;
+		border: 1px solid var(--color-accent);
+		border-radius: 10px;
+		background-color: var(--color-accent);
 
-		@include tablet {
+		@include large-mobile {
 			position: absolute;
 
 			left: 50%;
@@ -83,30 +81,48 @@
 
 			background-color: var(--color-bg);
 
-			isolation: isolate;
-			overflow: hidden;
+			border: 1px solid var(--color-accent);
+			border-radius: 50px;
+
+			background-color: var(--color-bg);
 		}
 	}
 
 	.pill-left {
 		display: flex;
 
-		flex-direction: column;
+		padding: 8px 10px 10px;
 
-		border-bottom: 1px solid var(--color-accent);
-
-		padding: 10px;
-
-		justify-content: center;
 		align-items: center;
 		text-align: center;
 
-		@include tablet {
+		justify-content: space-between;
+
+		span {
+			color: var(--color-bg);
+		}
+
+		button {
+			color: var(--color-text);
+		}
+
+		@include large-mobile {
+			flex-direction: column;
+			justify-content: center;
+
 			padding: 10px 20px 10px 25px;
 			border-right: 1px solid var(--color-accent);
 			border-bottom: none;
 			align-items: flex-start;
 			text-align: left;
+
+			span {
+				color: var(--color-accent);
+			}
+
+			button {
+				color: var(--color-light);
+			}
 		}
 	}
 
@@ -129,6 +145,10 @@
 		font-weight: var(--font-weight-body-alt);
 		font-size: var(--font-size-large);
 
+		border-radius: 10px;
+
+		background-color: var(--color-bg);
+
 		padding: 10px 20px;
 
 		transition: {
@@ -143,6 +163,10 @@
 		@include hover {
 			color: var(--color-bg);
 			background-color: var(--color-accent);
+		}
+
+		@include large-mobile {
+			border-radius: 0;
 		}
 	}
 </style>

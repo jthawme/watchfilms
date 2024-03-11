@@ -131,6 +131,7 @@
 		gap: 10px;
 
 		color: var(--color-bg);
+		text-align: justify;
 
 		p {
 			margin: 0;
@@ -145,6 +146,7 @@
 		}
 
 		@include tablet {
+			text-align: left;
 			grid-template-columns: 1fr 1fr;
 
 			&-right {
