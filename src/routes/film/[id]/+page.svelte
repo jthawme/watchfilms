@@ -9,6 +9,7 @@
 	import { store as Messages } from '$lib/store/messages.js';
 	import { pageTitle, plausible, tmdbImage } from '$lib/utils.js';
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -108,92 +109,94 @@
 	<title>{pageTitle(data.title)}</title>
 </svelte:head>
 
-<div class="page">
-	<Overlay show={showSynopsis} on:close={toggleSynopsis}>
-		<div class="synopsis">
-			<p>{data.overview}</p>
+{#if data.title}
+	<div transition:fade class="page">
+		<Overlay show={showSynopsis} on:close={toggleSynopsis}>
+			<div class="synopsis">
+				<p>{data.overview}</p>
 
-			<button on:click={toggleSynopsis} class="std btn-reset">Close</button>
-		</div>
-	</Overlay>
-
-	{#if data.trailer}
-		<Overlay show={showTrailer} on:close={toggleTrailer}>
-			<div class="trailer">
-				<div class="trailer-video">
-					<iframe
-						class="youtube-video"
-						src={`https://www.youtube.com/embed/${data.trailer}`}
-						title="Trailer"
-						frameborder="0"
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						allowfullscreen
-					></iframe>
-				</div>
-
-				<button on:click={toggleTrailer} class="std btn-reset">Close</button>
+				<button on:click={toggleSynopsis} class="std btn-reset">Close</button>
 			</div>
 		</Overlay>
-	{/if}
 
-	<div class="page-left content">
-		<h1 class="headline content-top">{data.title}</h1>
+		{#if data.trailer}
+			<Overlay show={showTrailer} on:close={toggleTrailer}>
+				<div class="trailer">
+					<div class="trailer-video">
+						<iframe
+							class="youtube-video"
+							src={`https://www.youtube.com/embed/${data.trailer}`}
+							title="Trailer"
+							frameborder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowfullscreen
+						></iframe>
+					</div>
 
-		<div class="content-middle">
-			<FilmContent
-				rating={data.rating}
-				runtime={data.runtime}
-				genre={data.genre}
-				release_date={data.release_date}
-				providers={data.providers}
-			>
-				<p>
-					<span>
-						<span><button on:click={toggleSynopsis} class="std btn-reset">Synopsis</button></span>
+					<button on:click={toggleTrailer} class="std btn-reset">Close</button>
+				</div>
+			</Overlay>
+		{/if}
 
-						{#if data.trailer}
-							<span>
-								<button on:click={toggleTrailer} class="std btn-reset">Trailer</button>
-							</span>
-						{/if}
-					</span>
-				</p>
-			</FilmContent>
+		<div class="page-left content">
+			<h1 class="headline content-top">{data.title}</h1>
+
+			<div class="content-middle">
+				<FilmContent
+					rating={data.rating}
+					runtime={data.runtime}
+					genre={data.genre}
+					release_date={data.release_date}
+					providers={data.providers}
+				>
+					<p>
+						<span>
+							<span><button on:click={toggleSynopsis} class="std btn-reset">Synopsis</button></span>
+
+							{#if data.trailer}
+								<span>
+									<button on:click={toggleTrailer} class="std btn-reset">Trailer</button>
+								</span>
+							{/if}
+						</span>
+					</p>
+				</FilmContent>
+			</div>
+
+			<span class="headline content-bottom">{data.person}</span>
 		</div>
 
-		<span class="headline content-bottom">{data.person}</span>
+		<div class:loaded class="page-right">
+			<a
+				on:click={onShare}
+				href={`mailto:?subject=Check out this film ${data.title}&body=${$page.url.href}`}
+				target="_blank"
+				class="std share">Share</a
+			>
+
+			{#if !saved}
+				<button class="std save btn-reset" on:click={onSave}>Save this film</button>
+			{:else}
+				<button class="std save btn-reset" on:click={onRemove}>Remove from saved</button>
+			{/if}
+
+			{#if data.poster && mounted}
+				<img loading="lazy" on:load={onImageLoad} src={tmdbImage(data.poster)} alt="" />
+			{/if}
+
+			<button class="std seen btn-reset" on:click={onSeen}>Seen this film</button>
+			{#if $Journey.started}
+				<div class="next">
+					<Pill on:click={onNext}>{filmsLength === 2 ? 'View Films →' : 'Next Film →'}</Pill>
+				</div>
+			{:else}
+				<div class="next">
+					<Pill to="/">Find a Film →</Pill>
+				</div>
+			{/if}
+		</div>
 	</div>
-
-	<div class:loaded class="page-right">
-		<a
-			on:click={onShare}
-			href={`mailto:?subject=Check out this film ${data.title}&body=${$page.url.href}`}
-			target="_blank"
-			class="std share">Share</a
-		>
-
-		{#if !saved}
-			<button class="std save btn-reset" on:click={onSave}>Save this film</button>
-		{:else}
-			<button class="std save btn-reset" on:click={onRemove}>Remove from saved</button>
-		{/if}
-
-		{#if data.poster && mounted}
-			<img loading="lazy" on:load={onImageLoad} src={tmdbImage(data.poster)} alt="" />
-		{/if}
-
-		<button class="std seen btn-reset" on:click={onSeen}>Seen this film</button>
-		{#if $Journey.started}
-			<div class="next">
-				<Pill on:click={onNext}>{filmsLength === 2 ? 'View Films →' : 'Next Film →'}</Pill>
-			</div>
-		{:else}
-			<div class="next">
-				<Pill to="/">Find a Film →</Pill>
-			</div>
-		{/if}
-	</div>
-</div>
+{/if}
 
 <style lang="scss">
 	.page {
@@ -266,6 +269,7 @@
 	.save,
 	.share {
 		position: absolute;
+		z-index: 5;
 	}
 
 	.next {

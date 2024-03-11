@@ -12,3 +12,5 @@ export async function load({ fetch, params }) {
 
 	return film;
 }
+
+export const ssr = false;
