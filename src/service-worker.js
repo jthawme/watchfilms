@@ -8,7 +8,7 @@ const CACHE = `cache-${version}`;
 const ASSETS = [
 	...build, // the app itself
 	...files // everything in `static`
-].filter((file) => file.startsWith('/social'));
+].filter((file) => !file.startsWith('/social'));
 
 console.log('SW', ASSETS);
 

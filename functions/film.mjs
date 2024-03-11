@@ -17,5 +17,5 @@ const handler = async (event, { params, geo }) => {
 export default handler;
 
 export const config = {
-	path: '/api/film/:id'
+	path: '/.netlify/functions/film/:id'
 };
