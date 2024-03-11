@@ -10,8 +10,6 @@ const ASSETS = [
 	...files // everything in `static`
 ].filter((file) => !file.startsWith('/social'));
 
-console.log('SW', ASSETS);
-
 self.addEventListener('install', (event) => {
 	// Create a new cache and add all files to it
 	async function addFilesToCache() {

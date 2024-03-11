@@ -5,7 +5,7 @@ import { moviedb } from './tmdb.js';
  * @param {number} id
  * @returns {Promise<any>}
  */
-async function getProviders(id) {
+export async function getProviders(id) {
 	try {
 		return moviedb.movie.providers(id).then((data) => data.results);
 	} catch (e) {
@@ -67,17 +67,14 @@ export const getRandom = async (genres, people, avoid = []) => {
  * @param {string} [country]
  * @returns {Promise<any>}
  */
-export const getFilm = async (id, country = 'GB', geo = {}) => {
+export const getFilm = async (id, country = 'GB') => {
 	const film = await import(`../data/film/${id}.json`).then((mod) => mod.default);
 
 	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
 
-	console.log('GRABBING', country);
-
 	return film
 		? {
 				...film,
-				geo,
 				providers: providers ? providers[country ?? 'GB'] : null
 			}
 		: null;

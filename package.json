@@ -3,12 +3,13 @@
 	"version": "2.0.0",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "npm run build:db && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"lint": "prettier --check .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"build:db": "node tools/buildDb.js"
 	},
 	"devDependencies": {
 		"@poppanator/sveltekit-svg": "^4.2.1",

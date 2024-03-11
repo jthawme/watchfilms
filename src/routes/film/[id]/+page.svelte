@@ -17,6 +17,7 @@
 	let showTrailer = false; // Display the trailer overlay
 
 	let loaded = false; // The image has loaded or not
+	let mounted = false;
 
 	function toggleSynopsis() {
 		showSynopsis = !showSynopsis;
@@ -88,6 +89,7 @@
 
 	let filmsLength = 0;
 	onMount(() => {
+		mounted = true;
 		filmsLength = $Journey.films.length;
 	});
 
@@ -176,12 +178,9 @@
 			<button class="std save btn-reset" on:click={onRemove}>Remove from saved</button>
 		{/if}
 
-		{#if data.poster}<img
-				loading="lazy"
-				on:load={onImageLoad}
-				src={tmdbImage(data.poster)}
-				alt=""
-			/>{/if}
+		{#if data.poster && mounted}
+			<img loading="lazy" on:load={onImageLoad} src={tmdbImage(data.poster)} alt="" />
+		{/if}
 
 		<button class="std seen btn-reset" on:click={onSeen}>Seen this film</button>
 		{#if $Journey.started}
