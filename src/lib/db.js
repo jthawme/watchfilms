@@ -6,7 +6,7 @@ import { promiseRunner } from './utils.js';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 export const db = knex({
-	client: 'better-sqlite3',
+	client: 'sqlite3',
 	connection: {
 		filename: path.join(__dirname, 'data', 'main.sqlite')
 	},

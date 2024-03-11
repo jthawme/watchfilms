@@ -5,7 +5,7 @@
  */
 export default {
 	development: {
-		client: 'better-sqlite3',
+		client: 'sqlite3',
 		connection: {
 			filename: './src/lib/data/main.sqlite'
 		}

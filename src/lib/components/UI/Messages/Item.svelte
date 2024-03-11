@@ -62,5 +62,8 @@
 		text-align: center;
 
 		color: var(--color-bg);
+
+		width: 100%;
+		display: block;
 	}
 </style>
