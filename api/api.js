@@ -76,12 +76,11 @@ export const getRandom = async (fetch, genres, people, avoid, shorts = true) => 
 
 /**
  *
- * @param {typeof fetch} fetch
  * @param {number} id
- * @param {string} [ip]
+ * @param {string} [country]
  * @returns {Promise<any>}
  */
-export const getFilm = async (fetch, id, ip = '') => {
+export const getFilm = async (id, country = 'GB') => {
 	const builder = FullMovies()
 		.select('movie.*', db.raw(`GROUP_CONCAT(genre.name) as genre`), 'person.name as person')
 		.where('movie.id', id)
@@ -91,7 +90,6 @@ export const getFilm = async (fetch, id, ip = '') => {
 	const film = await builder.then((data) => data);
 
 	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
-	const country = ip ? await getCountry(fetch, ip) : 'GB';
 
 	return film
 		? {
