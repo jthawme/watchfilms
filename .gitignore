@@ -17,3 +17,4 @@ static/icons
 static/manifest.json
 
 .netlify
+dist

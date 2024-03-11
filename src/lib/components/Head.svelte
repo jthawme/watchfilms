@@ -7,7 +7,8 @@
 	export let title = '';
 
 	/** @type {string} */
-	export let description = '';
+	export let description =
+		'A playful helper for finding a great film. 3 spins, no redos. Get lightly bullied into making a choice';
 
 	/** @type {string} */
 	export let seperator = ' – ';
