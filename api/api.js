@@ -91,6 +91,8 @@ export const getFilm = async (id, country = 'GB') => {
 
 	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
 
+	console.log('GRABBING', country);
+
 	return film
 		? {
 				...film,
