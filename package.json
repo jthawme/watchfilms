@@ -1,7 +1,6 @@
 {
-	"name": "sveltekit-template",
-	"version": "0.0.1",
-	"private": true,
+	"name": "watch-better-films",
+	"version": "2.0.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "npm run assets && vite build",
@@ -9,9 +8,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"lint": "prettier --check .",
-		"format": "prettier --write .",
-		"cms": "npx decap-server",
-		"assets": "jt-factory"
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
 		"@poppanator/sveltekit-svg": "^4.2.1",
@@ -31,9 +28,15 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"jt-factory": "^0.1.29",
+		"better-sqlite3": "^9.4.3",
+		"dotenv": "^16.4.5",
+		"jsonfile": "^6.1.0",
+		"knex": "^3.1.0",
+		"node-fetch": "^3.3.2",
 		"normalize.css": "^8.0.1",
 		"sass": "^1.70.0",
-		"sharp": "^0.33.2"
+		"sharp": "^0.33.2",
+		"short-unique-id": "^5.0.3",
+		"sqlite3": "^5.1.7"
 	}
 }

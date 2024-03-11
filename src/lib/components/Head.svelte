@@ -14,10 +14,10 @@
 	export let image = null;
 	// export let favicon = null;
 	/** @type {string} */
-	export let domain = 'https://jthaw.me';
+	export let domain = 'https://films.jthaw.club';
 
 	/** @type {string} */
-	export let defaultTitle = 'Template';
+	export let defaultTitle = 'Watch Better Films';
 	/** @type {string} */
 	export let defaultDescription = '';
 	/** @type {string | null} */
@@ -94,6 +94,7 @@
 
 <svelte:head>
 	<title>{formattedTitle}</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
 	<link rel="icon" href="/favicon.ico" />
 	<link rel="manifest" href="/manifest.json" />
 

@@ -1,37 +1,102 @@
-/**
- *
- * @param {string} url
- * @param {RequestInit} [opts]
- * @param {typeof fetch} [fetch]
- * @returns {Promise<Response>}
- */
-const fetcher = (url, opts, fetch) => {
-	const f = fetch ?? window.fetch;
-
-	return f(url, opts);
-};
+import { FullMovies, db } from './db.js';
+import { moviedb } from './tmdb.js';
 
 /**
  *
- * @param {Record<string, any>} obj
- * @returns {string}
+ * @param {number} id
+ * @returns {Promise<any>}
  */
-const paramsToString = (obj) => {
-	const params = new URLSearchParams(obj);
-
-	return params.size > 0 ? `?${params.toString()}` : '';
-};
-
-export const api = {
-	basic: {
-		/**
-		 *
-		 * @param {Record<string, string>} obj
-		 * @param {typeof fetch} [fetch]
-		 * @returns
-		 */
-		get(obj, fetch) {
-			return fetcher(`/api/basic${paramsToString(obj)}`, {}, fetch).then((resp) => resp.json());
-		}
+async function getProviders(id) {
+	try {
+		return moviedb.movie.providers(id).then((data) => data.results);
+	} catch (e) {
+		return [];
 	}
+}
+
+/**
+ *
+ * @param {typeof fetch} fetch
+ * @param {string} ip
+ * @returns {Promise<string | null>}
+ */
+async function getCountry(fetch, ip) {
+	try {
+		const { country } = fetch(`https://api.country.is/${ip}`).then((resp) => resp.json());
+
+		return country;
+	} catch {
+		return null;
+	}
+}
+
+/**
+ *
+ * @param {typeof fetch} fetch
+ * @param {number[]} genres
+ * @param {number[]} people
+ * @param {number[]} avoid
+ * @param {boolean} [shorts]
+ * @param {string} [ip]
+ * @returns {Promise<any>}
+ */
+export const getRandom = async (fetch, genres, people, avoid, shorts = true, ip) => {
+	const builder = FullMovies();
+
+	if (genres && genres.length) {
+		builder.whereIn('genre.id', genres);
+	}
+
+	if (people && people.length) {
+		builder.whereIn('person.id', people);
+	}
+
+	if (avoid && avoid.length) {
+		builder.whereNotIn('movie.id', avoid);
+	}
+
+	if (!shorts) {
+		builder.where('runtime', '>', 60);
+	}
+
+	const count = await builder.clone().count('movie.id AS total').first();
+
+	const film = await builder
+		.select('movie.id as id')
+		.orderByRaw('RANDOM()')
+		.groupBy('movie.id')
+		.first()
+		.then((data) => data);
+
+	return {
+		count: count?.total ?? 0,
+		id: film?.id
+	};
+};
+
+/**
+ *
+ * @param {typeof fetch} fetch
+ * @param {number} id
+ * @param {string} [ip]
+ * @returns {Promise<any>}
+ */
+export const getFilm = async (fetch, id, ip = '') => {
+	const builder = FullMovies()
+		.select('movie.*', db.raw(`GROUP_CONCAT(genre.name) as genre`), 'person.name as person')
+		.where('movie.id', id)
+		.groupBy('movie.id')
+		.first();
+
+	const film = await builder.then((data) => data);
+
+	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
+	const country = await getCountry(fetch, ip);
+
+	return film
+		? {
+				...film,
+				providers: providers ? providers[country ?? 'GB'] : null
+			}
+		: null;
 };

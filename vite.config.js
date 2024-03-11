@@ -1,5 +1,4 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { TransformServer } from 'jt-factory/vite';
 import svg from '@poppanator/sveltekit-svg';
 import { defineConfig } from 'vite';
 import BuildManifest from './tools/BuildManifest.js';
@@ -7,7 +6,6 @@ import BuildManifest from './tools/BuildManifest.js';
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		TransformServer(),
 		svg({
 			includePaths: ['./src/lib/icons/'],
 			svgoOptions: {
@@ -31,7 +29,37 @@ export default defineConfig({
 		}),
 		BuildManifest({
 			manifest: {
-				name: 'Svelte Template'
+				name: 'Watch Better Films',
+				short_name: 'Films',
+				description: 'A playful helper for finding a great film',
+				background_color: '#ffffff',
+				display: 'fullscreen',
+				start_url: '/?source=pwa',
+				theme_color: '#eb5c3d',
+				shortcuts: [
+					{
+						name: 'Random',
+						short_name: 'Random',
+						description: 'Get a random film recommended',
+						url: '/random?source=pwa',
+						icons: [
+							{
+								src: '/icons/96.favicon.png',
+								sizes: '96x96',
+								type: 'image/png',
+								purpose: 'maskable'
+							}
+						]
+					}
+				],
+				screenshots: [
+					{
+						src: '/screenshots/wide.jpg',
+						type: 'image/jpeg',
+						sizes: '1280x832',
+						form_factor: 'wide'
+					}
+				]
 			}
 		})
 	],

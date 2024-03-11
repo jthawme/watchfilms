@@ -1,5 +1,4 @@
-import { page } from '$app/stores';
-import { get } from 'svelte/store';
+import { TYPE } from './constants.js';
 
 /**
  * A performant version of a function call, used to keep functions
@@ -223,7 +222,7 @@ export const breakpointListen = (query, cb) => {
 /**
  * Adds an event listener and returns a cb to unlisten
  *
- * @param {HTMLElement | Window | Document} el
+ * @param {Element | HTMLElement | Window | Document} el
  * @param {string} evt
  * @param {EventListenerOrEventListenerObject} cb
  * @param {object | boolean} opts
@@ -282,7 +281,12 @@ const LOCAL_STORAGE_PREFIX = 'jt';
 export const getPersistedValue = (key, defaultValue, transform = (val) => val) => {
 	const item = localStorage.getItem([LOCAL_STORAGE_PREFIX, key].join('-'));
 
-	return item ? transform(item) : defaultValue;
+	try {
+		return item ? transform(item) : defaultValue;
+	} catch {
+		removePersistedValue(key);
+		return defaultValue;
+	}
 };
 
 /**
@@ -335,7 +339,7 @@ const KEYS = {
  * A function that registers a key listener for escaping
  *
  * @param {function} onEscape
- * @returns {function} Unlisten
+ * @returns {() => void)} Unlisten
  */
 export const registerExits = (onEscape) => {
 	const cb = (e) => {
@@ -436,7 +440,110 @@ export const getNth = (arr, idx, total) => {
 
 /**
  *
- * @param {string} slug
- * @returns {boolean}
+ * @param {string} key
+ * @param {(val: string) => any} [transform]
+ * @returns
  */
-export const isActive = (slug) => get(page).url.pathname === slug;
+export const getCustomProperty = (key, transform) => {
+	const v = getComputedStyle(document.documentElement).getPropertyValue(key);
+
+	if (!v.trim()) {
+		return null;
+	}
+
+	if (transform) {
+		return transform(v);
+	}
+
+	return v;
+};
+
+/**
+ *
+ * @param {number} top
+ *
+ * @returns {Promise<void>}
+ */
+export const scrollTo = (top) => {
+	return new Promise((resolve) => {
+		if (window.scrollY === top) {
+			resolve();
+		}
+
+		const u = listenCb(window, 'scroll', () => {
+			if (window.scrollY === top) {
+				u();
+				resolve();
+			}
+		});
+
+		window.scrollTo({
+			top,
+			behavior: 'smooth'
+		});
+	});
+};
+
+export const tmdbImage = (path, size = 'w1280') => {
+	return `https://image.tmdb.org/t/p/${size}${path}`;
+};
+
+export const ratingDisplay = (rating) => {
+	return `${Math.round(rating * 10)}%`;
+};
+
+/**
+ *
+ * @param {any[]} arr
+ * @param {(item: any, idx: number, arr: any[]) => any} cb
+ * @returns
+ */
+export const promiseRunner = (arr, cb) => {
+	/** @type {any[]} */
+	const data = [];
+
+	return new Promise((resolve) => {
+		const run = async (idx = 0) => {
+			if (idx >= arr.length) {
+				resolve(data);
+				return;
+			}
+
+			const r = await Promise.resolve().then(() => cb(arr[idx], idx, arr));
+			data.push(r);
+
+			run(idx + 1);
+		};
+
+		run();
+	});
+};
+
+export const mergeProviders = (providers = {}) => {
+	const stream = [
+		...new Set(
+			(providers?.flatrate ?? []).map((item) => item.provider_name.split(' ').shift()).slice(0, 3)
+		)
+	];
+	const purchase = [
+		...new Set(
+			[...(providers?.buy ?? []), ...(providers?.rent ?? [])].map((item) =>
+				item.provider_name.split(' ').shift()
+			)
+		)
+	].slice(0, 2);
+
+	return { stream, purchase };
+};
+
+/**
+ *
+ * @param {string | undefined | null} type
+ */
+export const validateType = (type) => {
+	if (!type) {
+		return TYPE.GENRE;
+	}
+
+	return Object.values(TYPE).includes(type) ? type : TYPE.GENRE;
+};
