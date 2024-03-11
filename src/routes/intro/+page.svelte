@@ -77,6 +77,8 @@
 
 		text-align: center;
 
+		padding: 0 var(--inner-padding);
+
 		em {
 			font-style: normal;
 
@@ -85,7 +87,7 @@
 	}
 
 	.choice {
-		width: 60vw;
+		width: calc(90vw - (2 * var(--inner-padding)));
 
 		&-title {
 			display: block;
@@ -94,23 +96,25 @@
 
 			margin-bottom: 2em;
 		}
+
+		@include large-mobile {
+			width: 60vw;
+		}
 	}
 
 	.choices {
 		display: grid;
 
-		grid-template-columns: 1fr auto 1fr;
-
 		gap: 10px;
 
 		&-line {
-			width: 1px;
+			height: 1px;
 
-			background-color: var(--color-x-light);
+			background-color: var(--color-light);
 		}
 
 		&-item {
-			aspect-ratio: 1/1;
+			aspect-ratio: 5/3;
 
 			display: flex;
 
@@ -132,6 +136,20 @@
 
 			@include hover {
 				background-color: var(--color-accent);
+			}
+		}
+
+		@include large-mobile {
+			grid-template-columns: 1fr auto 1fr;
+
+			&-line {
+				width: 1px;
+				height: auto;
+				background-color: var(--color-x-light);
+			}
+
+			&-item {
+				aspect-ratio: 1/1;
 			}
 		}
 	}

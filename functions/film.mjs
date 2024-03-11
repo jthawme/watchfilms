@@ -21,7 +21,8 @@ const handler = async (event, { geo }) => {
 	const film = await getFilm(parseInt(new URL(event.url).searchParams.get('id')), geo.country.code);
 
 	return Response.json({
-		film
+		film,
+		geo
 	});
 };
 

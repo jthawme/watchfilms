@@ -4,7 +4,13 @@ films.jthaw.club is a website to help you decide what to watch. There are thousa
 
 ## Running
 
-Install with `npm install` and then run with `npm run dev`
+Install with `npm install`. Because its deployed its dependant on the functions framework netlify uses, so you need to use netlify cli and run
+
+```
+netlify dev
+```
+
+to run the site
 
 ## Data
 
