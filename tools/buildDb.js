@@ -1,5 +1,5 @@
 import jsonfile from 'jsonfile';
-import { moviedb } from '../src/lib/tmdb.js';
+import { moviedb } from '../api/tmdb.js';
 import {
 	Genres,
 	People,
@@ -10,11 +10,14 @@ import {
 	addPersonJoin,
 	cleanup,
 	getMovie,
-	removePeople
-} from '../src/lib/db.js';
+	removePeople,
+	FullMovies,
+	db
+} from '../api/db.js';
 import * as url from 'url';
 import path from 'path';
-import { promiseRunner } from '../src/lib/utils.js';
+import fs from 'fs-extra';
+import { promiseRunner } from '../api/utils.js';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -165,8 +168,67 @@ const force = process.argv.some((item) => item === '-f');
 		return a.name.localeCompare(b.name);
 	});
 
-	await jsonfile.writeFile(path.join(__dirname, '../src/lib/data/people.json'), peopleItems);
-	await jsonfile.writeFile(path.join(__dirname, '../src/lib/data/genres.json'), genreItems);
+	await jsonfile.writeFile(path.join(__dirname, '../data/people.json'), peopleItems);
+	await jsonfile.writeFile(path.join(__dirname, '../data/genres.json'), genreItems);
+
+	const saveMovies = async () => {
+		await fs.ensureDir(path.join(__dirname, `../data/film/`));
+
+		const movies = await FullMovies()
+			.select('movie.*', db.raw(`GROUP_CONCAT(genre.name) as genre`), 'person.name as person')
+			.groupBy('movie.id');
+
+		return promiseRunner(movies, async (movie) => {
+			await jsonfile.writeFile(path.join(__dirname, `../data/film/${movie.id}.json`), movie);
+		});
+	};
+
+	const saveGenres = async () => {
+		await fs.ensureDir(path.join(__dirname, `../data/genre/`));
+
+		const genres = await Genres();
+
+		return promiseRunner(genres, async (genre) => {
+			const movies = await FullMovies()
+				.select('movie.id')
+				.where('genre.id', genre.id)
+				.where('movie.runtime', '>', 60)
+				.groupBy('movie.id');
+
+			await jsonfile.writeFile(
+				path.join(__dirname, `../data/genre/${genre.id}.json`),
+				movies.map((item) => item.id)
+			);
+		});
+	};
+
+	const savePeople = async () => {
+		await fs.ensureDir(path.join(__dirname, `../data/person/`));
+
+		const people = await People();
+
+		return promiseRunner(people, async (person) => {
+			const movies = await FullMovies()
+				.select('movie.id')
+				.where('person.id', person.id)
+				.where('movie.runtime', '>', 60)
+				.groupBy('movie.id');
+
+			await jsonfile.writeFile(
+				path.join(__dirname, `../data/person/${person.id}.json`),
+				movies.map((item) => item.id)
+			);
+		});
+	};
+
+	console.log(`Exporting movies statically`);
+	await saveMovies();
+
+	console.log(`Exporting genres statically`);
+	await saveGenres();
+
+	console.log(`Exporting people statically`);
+	await savePeople();
 
 	await cleanup();
 })();

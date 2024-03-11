@@ -1,4 +1,3 @@
-import { FullMovies, db } from './db.js';
 import { moviedb } from './tmdb.js';
 
 /**
@@ -32,45 +31,33 @@ async function getCountry(fetch, ip) {
 
 /**
  *
- * @param {typeof fetch} fetch
  * @param {number[]} genres
  * @param {number[]} people
  * @param {number[]} avoid
- * @param {boolean} [shorts]
- * @param {string} [ip]
  * @returns {Promise<any>}
  */
-export const getRandom = async (fetch, genres, people, avoid, shorts = true) => {
-	const builder = FullMovies();
+export const getRandom = async (genres, people, avoid = []) => {
+	const paths = [];
 
 	if (genres && genres.length) {
-		builder.whereIn('genre.id', genres);
+		paths.push(
+			...genres.map((genreId) => import(`../data/genre/${genreId}.json`).then((mod) => mod.default))
+		);
 	}
 
 	if (people && people.length) {
-		builder.whereIn('person.id', people);
+		paths.push(
+			...people.map((personId) =>
+				import(`../data/person/${personId}.json`).then((mod) => mod.default)
+			)
+		);
 	}
 
-	if (avoid && avoid.length) {
-		builder.whereNotIn('movie.id', avoid);
-	}
-
-	if (!shorts) {
-		builder.where('runtime', '>', 60);
-	}
-
-	const count = await builder.clone().count('movie.id AS total').first();
-
-	const film = await builder
-		.select('movie.id as id')
-		.orderByRaw('RANDOM()')
-		.groupBy('movie.id')
-		.first()
-		.then((data) => data);
+	const films = (await Promise.all(paths)).flat().filter((id) => !avoid.includes(id));
 
 	return {
-		count: count?.total ?? 0,
-		id: film?.id
+		count: films.length,
+		id: films.length ? films[Math.floor(Math.random() * films.length)] : null
 	};
 };
 
@@ -81,13 +68,7 @@ export const getRandom = async (fetch, genres, people, avoid, shorts = true) => 
  * @returns {Promise<any>}
  */
 export const getFilm = async (id, country = 'GB') => {
-	const builder = FullMovies()
-		.select('movie.*', db.raw(`GROUP_CONCAT(genre.name) as genre`), 'person.name as person')
-		.where('movie.id', id)
-		.groupBy('movie.id')
-		.first();
-
-	const film = await builder.then((data) => data);
+	const film = await import(`../data/film/${id}.json`).then((mod) => mod.default);
 
 	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
 
