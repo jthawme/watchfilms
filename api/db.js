@@ -3,12 +3,13 @@ import * as url from 'url';
 import path from 'path';
 import { promiseRunner } from './utils.js';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const dir =
+	typeof __dirname !== 'undefined' ? __dirname : url.fileURLToPath(new URL('.', import.meta.url));
 
 export const db = knex({
 	client: 'sqlite3',
 	connection: {
-		filename: path.join(__dirname, 'data', 'main.sqlite')
+		filename: path.join(dir, '../data', 'main.sqlite')
 	},
 	useNullAsDefault: true
 });

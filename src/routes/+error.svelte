@@ -49,6 +49,8 @@
 
 		margin: 0;
 
+		text-align: center;
+
 		&-top {
 			top: 0;
 			transform: translate3d(-50%, -45%, 0);

@@ -1,10 +1,9 @@
-import { TYPE } from '$lib/constants.js';
-import genres from '$lib/data/genres.json';
-import people from '$lib/data/people.json';
 import { validateType } from '$lib/utils.js';
 
 /** @type {import('../$types').PageLoad} */
-export async function load({ url }) {
+export async function load({ url, fetch }) {
+	const { people, genres } = await fetch('/.netlify/functions/config').then((resp) => resp.json());
+
 	return {
 		type: validateType(url.searchParams.get('type')),
 		people: people.map((item) => ({

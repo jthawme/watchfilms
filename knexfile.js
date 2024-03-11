@@ -7,7 +7,7 @@ export default {
 	development: {
 		client: 'sqlite3',
 		connection: {
-			filename: './src/lib/data/main.sqlite'
+			filename: './functions/main.sqlite'
 		}
 	}
 };

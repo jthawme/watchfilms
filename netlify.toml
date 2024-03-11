@@ -1,0 +1,4 @@
+[functions]
+  directory = "functions"
+  external_node_modules = ["tedious", "mysql", "mysql2", "oracledb", "pg", "pg-query-stream"]
+  included_files = ["data/*"]

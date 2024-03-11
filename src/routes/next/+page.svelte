@@ -10,7 +10,7 @@
 	let mounted = false;
 
 	async function getFilm() {
-		const { film } = await fetch('/api/random', {
+		const { film } = await fetch('/.netlify/functions/random', {
 			method: 'POST',
 			headers: {
 				accept: 'application/json'

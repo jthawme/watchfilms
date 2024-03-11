@@ -547,3 +547,11 @@ export const validateType = (type) => {
 
 	return Object.values(TYPE).includes(type) ? type : TYPE.GENRE;
 };
+
+export const plausible = (evt, opts = {}) => {
+	if (typeof window === 'undefined') {
+		return;
+	}
+
+	window.plausible(evt, opts);
+};

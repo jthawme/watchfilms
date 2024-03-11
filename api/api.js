@@ -40,7 +40,7 @@ async function getCountry(fetch, ip) {
  * @param {string} [ip]
  * @returns {Promise<any>}
  */
-export const getRandom = async (fetch, genres, people, avoid, shorts = true, ip) => {
+export const getRandom = async (fetch, genres, people, avoid, shorts = true) => {
 	const builder = FullMovies();
 
 	if (genres && genres.length) {
@@ -91,7 +91,7 @@ export const getFilm = async (fetch, id, ip = '') => {
 	const film = await builder.then((data) => data);
 
 	const providers = await (film ? getProviders(film.id) : Promise.resolve(null));
-	const country = await getCountry(fetch, ip);
+	const country = ip ? await getCountry(fetch, ip) : 'GB';
 
 	return film
 		? {

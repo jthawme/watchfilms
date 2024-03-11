@@ -1,12 +1,13 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Head from '$lib/components/Head.svelte';
 	import FilmContent from '$lib/components/UI/FilmContent.svelte';
 	import Overlay from '$lib/components/UI/Overlay.svelte';
 	import Pill from '$lib/components/UI/Pill.svelte';
 	import { store as Journey } from '$lib/store/journey.js';
 	import { store as Messages } from '$lib/store/messages.js';
-	import { tmdbImage } from '$lib/utils.js';
+	import { plausible, tmdbImage } from '$lib/utils.js';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -20,7 +21,7 @@
 		showSynopsis = !showSynopsis;
 
 		if (showSynopsis) {
-			window.plausible('User', { props: { action: 'Viewed Synopsis' } });
+			plausible('User', { props: { action: 'Viewed Synopsis' } });
 		}
 	}
 
@@ -28,7 +29,7 @@
 		showTrailer = !showTrailer;
 
 		if (showTrailer) {
-			window.plausible('User', { props: { action: 'Watched trailer' } });
+			plausible('User', { props: { action: 'Watched trailer' } });
 		}
 	}
 
@@ -37,7 +38,7 @@
 	}
 
 	async function onSave() {
-		window.plausible('User', { props: { action: 'Saved film', title: data.title } });
+		plausible('User', { props: { action: 'Saved film', title: data.title } });
 		Messages.add(`Saved ${data.title} to your list`, {
 			delay: 2000
 		});
@@ -46,7 +47,7 @@
 	}
 
 	async function onRemove() {
-		window.plausible('User', { props: { action: 'Removed film' } });
+		plausible('User', { props: { action: 'Removed film' } });
 		Messages.add(`Removed from your list`, {
 			delay: 2000
 		});
@@ -72,7 +73,7 @@
 	}
 
 	async function onShare(e) {
-		window.plausible('User', { props: { action: 'Share' } });
+		plausible('User', { props: { action: 'Share' } });
 
 		if ('share' in navigator) {
 			e.preventDefault();
@@ -156,7 +157,7 @@
 	<div class:loaded class="page-right">
 		<a
 			on:click={onShare}
-			href={`mailto:?subject=Check out this film ${data.title}&body=${window.location.href}`}
+			href={`mailto:?subject=Check out this film ${data.title}&body=${$page.url.href}`}
 			target="_blank"
 			class="std share">Share</a
 		>

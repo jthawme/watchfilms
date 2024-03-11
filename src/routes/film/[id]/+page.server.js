@@ -1,4 +1,4 @@
-import { getFilm, getRandom } from '$lib/api.js';
+import { getFilm } from '../../../../api/api.js';
 import { redirect } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageServerLoad} */
