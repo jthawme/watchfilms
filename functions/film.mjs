@@ -6,8 +6,8 @@ import { getFilm } from '../api/api.js';
  * @param {*} context
  * @returns
  */
-const handler = async (event, { params, geo }) => {
-	const film = await getFilm(parseInt(params.id), geo.country.code);
+const handler = async (event, { geo }) => {
+	const film = await getFilm(parseInt(new URL(event.url).searchParams.get('id')), geo.country.code);
 
 	return Response.json({
 		film
@@ -16,6 +16,6 @@ const handler = async (event, { params, geo }) => {
 
 export default handler;
 
-export const config = {
-	path: '/.netlify/functions/film/:id'
-};
+// export const config = {
+// 	path: '/.netlify/functions/film/:id'
+// };
