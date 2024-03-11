@@ -53,6 +53,13 @@ export const getRandom = async (genres, people, avoid = []) => {
 		);
 	}
 
+	if ((!people || people.length === 0) && (!genres || genres.length === 0)) {
+		const peopleIds = await import('../data/people.json').then((mod) => mod.default);
+		const personId = peopleIds[Math.floor(Math.random() * peopleIds.length)].id;
+
+		paths.push(import(`../data/person/${personId}.json`).then((mod) => mod.default));
+	}
+
 	const films = (await Promise.all(paths)).flat().filter((id) => !avoid.includes(id));
 
 	return {
