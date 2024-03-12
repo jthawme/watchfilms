@@ -12,6 +12,7 @@
 		getPersistedValue,
 		listenCb,
 		onWindowResize,
+		plausible,
 		scrollTo
 	} from '$lib/utils.js';
 	import Credits from '$lib/components/UI/Credits.svelte';
@@ -151,6 +152,10 @@
 
 	function toggleCredits() {
 		UI.setMenu(!$UI.menu);
+
+		if ($UI.menu) {
+			plausible('User', { props: { action: 'Opened Menu' } });
+		}
 	}
 
 	$: if (typeof document !== 'undefined' && $UI.theme) {
