@@ -71,7 +71,9 @@ const PERSON_IDS = [
 	5763, // Jacques Tati
 	25645, // Hirokazu Kore-eda
 	222686, // Mia Hansen-Løve
-	71609 // Joachim Trier
+	71609, // Joachim Trier
+	28615, // Eric Rohmer
+	1395183 // Chloe Zhao
 ];
 
 const force = process.argv.some((item) => item === '-f');
