@@ -73,7 +73,8 @@ const PERSON_IDS = [
 	222686, // Mia Hansen-Løve
 	71609, // Joachim Trier
 	28615, // Eric Rohmer
-	1395183 // Chloe Zhao
+	1395183, // Chloe Zhao
+	122423 // Yorgos Lanthimos
 ];
 
 const force = process.argv.some((item) => item === '-f');
