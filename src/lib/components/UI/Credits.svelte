@@ -61,6 +61,12 @@
 	<MovieTiles small on:remove={onRemoveFilm} items={$Journey.avoid} />
 </section>
 
+<section class="center">
+	<span class="title">Catalogue</span>
+
+	<a href="/catalogue">Browse every director and every film</a>
+</section>
+
 <section>
 	<span class="title">Settings</span>
 
@@ -71,7 +77,7 @@
 	<span class="title">Credits</span>
 
 	<p>
-		The site is built using
+		The date for this site is sourced from
 		<a
 			href="https://developer.themoviedb.org/reference/intro/getting-started"
 			target="_blank"
@@ -89,6 +95,23 @@
 <style lang="scss">
 	section {
 		padding: 40px var(--inner-padding);
+
+		a:not(:has(img, div)) {
+			color: var(--color-bg);
+			text-decoration: none;
+
+			@include hover {
+				color: var(--color-bg-opacity);
+			}
+		}
+
+		&.center {
+			display: flex;
+
+			flex-direction: column;
+
+			align-items: center;
+		}
 
 		.title {
 			display: block;

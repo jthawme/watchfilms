@@ -565,3 +565,20 @@ export const plausible = (evt, opts = {}) => {
 export const pageTitle = (title, defaultTitle = 'Watch Better Films', seperator = ' – ') => {
 	return title ? [title, defaultTitle].join(seperator) : defaultTitle;
 };
+
+/**
+ *
+ * @param {T[]} arr
+ * @param {((a: T, b: T) => number} compare
+ * @template T
+ */
+export const toSorted = (arr, compare) => {
+	if ('toSorted' in arr) {
+		return arr.toSorted(compare);
+	}
+
+	const a = [...arr];
+	a.sort(compare);
+
+	return a;
+};
