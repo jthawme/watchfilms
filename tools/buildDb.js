@@ -79,6 +79,7 @@ const PERSON_IDS = [
 ];
 
 const force = process.argv.some((item) => item === '-f');
+const update = process.argv.some((item) => item === '-u');
 
 (async () => {
 	console.log('Getting genres');
@@ -137,7 +138,7 @@ const force = process.argv.some((item) => item === '-f');
 			await promiseRunner(movies, async (movie) => {
 				const exists = await getMovie(movie.id);
 
-				if (exists && !force) {
+				if (exists && !force && !update) {
 					return;
 				}
 
