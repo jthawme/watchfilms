@@ -44,6 +44,8 @@
 			}
 		} else {
 			open = false;
+
+			document.getElementById(id)?.scrollIntoView();
 		}
 	}
 
@@ -69,7 +71,7 @@
 	);
 </script>
 
-<div class="row">
+<div class="row" class:open {id}>
 	<div class="row-header">
 		<div class="row-name headline">{name}</div>
 		<div class="row-actions">
@@ -95,17 +97,33 @@
 		padding: 1em 0;
 
 		&-header {
+			background-color: var(--color-bg);
+
 			display: grid;
 
-			grid-template-columns: 1fr auto;
+			grid-template-columns: 1fr;
+			row-gap: 0.5em;
 			align-items: center;
 
 			padding: 1em 0;
+
+			@include tablet {
+				grid-template-columns: 1fr auto;
+				align-items: center;
+			}
 		}
 
 		&-name {
 			font-size: var(--font-size-large);
 		}
+	}
+
+	.row.open .row-header {
+		position: sticky;
+
+		top: 0;
+
+		z-index: 10;
 	}
 
 	.pool {
