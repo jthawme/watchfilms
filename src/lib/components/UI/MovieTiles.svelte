@@ -1,20 +1,26 @@
 <script>
 	import { tmdbImage } from '$lib/utils.js';
+	import { store as Journey } from '$lib/store/journey.js';
 	import { createEventDispatcher } from 'svelte';
 
 	/** @type {Array<{id: number, backdrop: string, title: string}>} */
 	export let items = [];
 
 	export let small = false;
+	export let light = false;
 
 	const dispatch = createEventDispatcher();
 
-	function onRemove(e) {
-		dispatch('remove', parseInt(e.target.dataset.id));
+	function onRemove(id) {
+		dispatch('remove', id);
+	}
+
+	function onAdd(item) {
+		dispatch('add', item);
 	}
 </script>
 
-<div class="wrapper" class:smaller={small}>
+<div class="wrapper" class:smaller={small} class:light>
 	{#each items as item}
 		<div class="tile">
 			<a target="_blank" href={`/film/${item.id}`} class="tile-image">
@@ -26,7 +32,15 @@
 				<span class="title">{item.title}</span>
 
 				<div class="action">
-					<button class="std btn-reset" on:click={onRemove} data-id={item.id}>Remove</button>
+					{#if $Journey.avoid.some((seenItem) => seenItem.id === item.id)}
+						<button class="std btn-reset" on:click={() => onRemove(item.id)} data-id={item.id}
+							>Remove</button
+						>
+					{:else}
+						<button class="std btn-reset" on:click={() => onAdd(item)} data-id={item.id}
+							>Add to seen</button
+						>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -107,6 +121,10 @@
 
 		.title {
 			color: var(--color-bg);
+
+			.light & {
+				color: var(--color-text);
+			}
 		}
 
 		.action {

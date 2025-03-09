@@ -86,3 +86,12 @@ export const getFilm = async (id, country = 'GB') => {
 			}
 		: null;
 };
+
+/**
+ *
+ * @param {string} personId
+ * @returns
+ */
+export const getPerson = async (personId) => {
+	return import(`../data/person/${personId}.json`).then((mod) => mod.default);
+};

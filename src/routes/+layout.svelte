@@ -134,6 +134,8 @@
 	});
 
 	onNavigate((navigation) => {
+		$UI.menu = false;
+
 		if (!document.startViewTransition) return;
 
 		return new Promise((resolve) => {
