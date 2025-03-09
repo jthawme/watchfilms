@@ -18,6 +18,14 @@ The data is all stored in an sqlite database [here](functions/main.sqlite). You'
 
 The data needs to be rebuilt locally, so I set a calendar reminder to run [this file](tools/buildDb.js) every month, to get new releases. Very old school I know, but I deploy the site on netlify and it just felt the easiest option for me (as the file directory is rightfully a little weird when deploying a static site with functions etc.)
 
+The update command is
+
+```
+npm run build:db -- -u
+```
+
+The `-u` is 'update'. This is info for future me
+
 ### Info
 
 This is 2.0 built on top of sveltekit, as part of my spring cleaning of old sites.
