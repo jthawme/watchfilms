@@ -27,10 +27,15 @@ export const People = () => db(TABLE.PERSON);
 export const Movies = () => db(TABLE.MOVIE);
 export const FullMovies = () =>
 	db(TABLE.MOVIE)
-		.join(TABLE.MOVIE_GENRE, `${TABLE.MOVIE}.id`, '=', `${TABLE.MOVIE_GENRE}.movie_id`)
-		.join(TABLE.GENRE, `${TABLE.GENRE}.id`, '=', `${TABLE.MOVIE_GENRE}.genre_id`)
-		.join(TABLE.MOVIE_PERSON, `${TABLE.MOVIE}.id`, '=', `${TABLE.MOVIE_PERSON}.movie_id`)
-		.join(TABLE.PERSON, `${TABLE.PERSON}.id`, '=', `${TABLE.MOVIE_PERSON}.person_id`);
+		.innerJoin(
+			`${TABLE.MOVIE_GENRE} as genrePivot`,
+			`${TABLE.MOVIE}.id`,
+			'=',
+			`genrePivot.movie_id`
+		)
+		.join(`${TABLE.GENRE} as genre`, `${TABLE.GENRE}.id`, '=', `genrePivot.genre_id`)
+		.join(`${TABLE.MOVIE_PERSON} as personPivot`, `${TABLE.MOVIE}.id`, '=', `personPivot.movie_id`)
+		.join(`${TABLE.PERSON} as person`, `${TABLE.PERSON}.id`, '=', `personPivot.person_id`);
 
 export const getGenres = () => {
 	return Genres().select('*');

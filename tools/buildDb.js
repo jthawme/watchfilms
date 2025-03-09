@@ -12,7 +12,8 @@ import {
 	getMovie,
 	removePeople,
 	FullMovies,
-	db
+	db,
+	Movies
 } from '../api/db.js';
 import * as url from 'url';
 import path from 'path';
@@ -87,9 +88,11 @@ const force = process.argv.some((item) => item === '-f');
 	await addGenres(genres);
 
 	const existingIds = (await People().select('id')).map((item) => item.id);
+	const existingMovieIds = (await FullMovies().select('movie.*').groupBy('movie.id')).map(
+		(item) => item.id
+	);
 
 	const removedIds = existingIds.filter((id) => !PERSON_IDS.includes(id));
-	const addedIds = force ? PERSON_IDS : PERSON_IDS.filter((id) => !existingIds.includes(id));
 
 	if (removedIds.length) {
 		console.log(`Removing ${removedIds.join(', ')}`);
@@ -98,7 +101,7 @@ const force = process.argv.some((item) => item === '-f');
 
 	console.log('Getting people');
 	const people = (
-		await promiseRunner(addedIds, async (id) => {
+		await promiseRunner(PERSON_IDS, async (id) => {
 			const person = await moviedb.person.get(id);
 
 			return person;
@@ -119,46 +122,55 @@ const force = process.argv.some((item) => item === '-f');
 
 	console.log('Adding People');
 	await promiseRunner(people, async (person) => {
-		await addPerson(person.info);
+		const exists = existingIds.includes(person.id);
+		const movies = force
+			? person.movies
+			: person.movies.filter((item) => !existingMovieIds.includes(item.id));
 
-		console.log(`Adding ${person.info.name} (${person.movies.length} movies)`);
+		if (!exists) {
+			await addPerson(person.info);
+		}
 
-		await promiseRunner(person.movies, async (movie) => {
-			const exists = await getMovie(movie.id);
+		console.log(`Adding ${person.info.name} (${movies.length} movies)`);
 
-			if (exists && !force) {
-				return;
-			}
+		if (movies.length) {
+			await promiseRunner(movies, async (movie) => {
+				const exists = await getMovie(movie.id);
 
-			const detail = await moviedb.movie.get(movie.id);
+				if (exists && !force) {
+					return;
+				}
 
-			if (detail.status !== 'Released') {
-				return;
-			}
+				const detail = await moviedb.movie.get(movie.id);
 
-			try {
-				await addMovie({
-					id: movie.id,
-					title: detail.title,
-					original_title: detail.original_title,
-					poster: detail.poster_path ?? null,
-					backdrop: detail.backdrop_path ?? null,
-					overview: detail.overview,
-					synopsis: detail.overview,
-					runtime: detail.runtime,
-					rating: detail.vote_average,
-					rt_rating: null,
-					release_date: detail.release_date,
-					trailer: detail.trailer?.key ?? null
-				});
+				if (detail.status !== 'Released') {
+					return;
+				}
 
-				await Promise.all(movie.genre_ids.map((id) => addGenreJoin(movie.id, id)));
-				await addPersonJoin(movie.id, person.info.id);
-			} catch (e) {
-				console.error(e);
-				console.log(`Error with: `, movie);
-			}
-		});
+				try {
+					await addMovie({
+						id: movie.id,
+						title: detail.title,
+						original_title: detail.original_title,
+						poster: detail.poster_path ?? null,
+						backdrop: detail.backdrop_path ?? null,
+						overview: detail.overview,
+						synopsis: detail.overview,
+						runtime: detail.runtime,
+						rating: detail.vote_average,
+						rt_rating: null,
+						release_date: detail.release_date,
+						trailer: detail.trailer?.key ?? null
+					});
+
+					await Promise.all(movie.genre_ids.map((id) => addGenreJoin(movie.id, id)));
+					await addPersonJoin(movie.id, person.info.id);
+				} catch (e) {
+					console.error(e);
+					console.log(`Error with: `, movie);
+				}
+			});
+		}
 	});
 
 	const peopleItems = await People().select('id', 'name');

@@ -1,8 +1,8 @@
 /**
  *
- * @param {any[]} arr
- * @param {(item: any, idx: number, arr: any[]) => any} cb
- * @returns
+ * @param {T[]} arr
+ * @param {(item: T, idx: number, arr: T[]) => any} cb
+ * @template T
  */
 export const promiseRunner = (arr, cb) => {
 	/** @type {any[]} */
